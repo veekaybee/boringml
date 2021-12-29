@@ -1,6 +1,6 @@
 {
-  "name": "My New Hugo Site",
-  "short_name": "My New Hugo Site",
+  "name": "Boring Machine Learning",
+  "short_name": "Boring Machine Learning",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
