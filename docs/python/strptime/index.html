@@ -1,0 +1,258 @@
+<!doctype html><html lang=en dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="One weird trick about Python date formats #  I&rsquo;ve been working with date manipulation in Python as part ofthis Reddit challenge, which asks the programmer to find the year(s) in history when the most US presidents were alive given each president&rsquo;s birth and death date.
+Usually, when working with dates and times in programming, it&rsquo;s best to convert to object types that inherently have some assumptions about time and date already built in to allow for easy addition, subtraction, and date conversion.">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="strptime and strftime">
+<meta property="og:description" content="One weird trick about Python date formats #  I&rsquo;ve been working with date manipulation in Python as part ofthis Reddit challenge, which asks the programmer to find the year(s) in history when the most US presidents were alive given each president&rsquo;s birth and death date.
+Usually, when working with dates and times in programming, it&rsquo;s best to convert to object types that inherently have some assumptions about time and date already built in to allow for easy addition, subtraction, and date conversion.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://boringml.com/docs/python/strptime/"><meta property="article:section" content="docs">
+<meta property="article:modified_time" content="2021-12-29T15:41:33-05:00">
+<title>strptime and strftime | Boring Machine Learning</title>
+<link rel=manifest href=/manifest.json>
+<link rel=icon href=/favicon.png type=image/x-icon>
+<link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
+<script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.64465ed3fe966d091d308affe9c27729002dbd0ca799ae6f43c3be2910f16e66.js integrity="sha256-ZEZe0/6WbQkdMIr/6cJ3KQAtvQynma5vQ8O+KRDxbmY=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/><img src=/logo.png alt=Logo><span>Boring Machine Learning</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul>
+<li>
+<input type=checkbox id=section-d41e3b1e7be18fdedcdd8781529c68cd class=toggle>
+<label for=section-d41e3b1e7be18fdedcdd8781529c68cd class="flex justify-between">
+<a href=http://boringml.com/docs/php/>Php</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/php/arrays/>is_set</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-dbec22d72f9c0b4ccf9d173e77fe928c class=toggle checked>
+<label for=section-dbec22d72f9c0b4ccf9d173e77fe928c class="flex justify-between">
+<a href=http://boringml.com/docs/python/>Python</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/python/strptime/ class=active>strptime and strftime</a>
+</li>
+<li>
+<a href=http://boringml.com/docs/python/venv/>venv</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle>
+<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between">
+<a href=http://boringml.com/docs/recsys/>Recsys</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-38bb35919265222d517dd5f8edf2719a class=toggle>
+<label for=section-38bb35919265222d517dd5f8edf2719a class="flex justify-between">
+<a href=http://boringml.com/docs/scala/>Scala</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/scala/post1/>Scalding</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-e6b75252305a86840411664cb2e84e9c class=toggle>
+<label for=section-e6b75252305a86840411664cb2e84e9c class="flex justify-between">
+<a href=http://boringml.com/docs/sql/>SQL</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/sql/arrays/>Legible SQL</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
+<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
+<a role=button>Computer Science</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-26e813df4c1d2ae66edc7adef58c4759 class=toggle>
+<label for=section-26e813df4c1d2ae66edc7adef58c4759 class="flex justify-between">
+<a role=button>Frameworks</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/frameworks/airflow/>Airflow</a>
+</li>
+<li>
+<a href=http://boringml.com/docs/frameworks/aws/>Aws</a>
+</li>
+<li>
+<a href=http://boringml.com/docs/frameworks/kubernetes/>Kubernetes</a>
+</li>
+<li class=book-section-flat>
+<span>Spark</span>
+<ul>
+<li>
+<a href=http://boringml.com/docs/frameworks/spark/create-data-python/>Sample data in PySpark</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>strptime and strftime</strong>
+<label for=toc-control>
+</label>
+</div>
+</header>
+<article class=markdown><h1 id=one-weird-trick-about-python-date-formats>
+One weird trick about Python date formats
+<a class=anchor href=#one-weird-trick-about-python-date-formats>#</a>
+</h1>
+<p>I&rsquo;ve been working with date manipulation in Python as part of<a href=https://www.reddit.com/r/dailyprogrammer/comments/49aatn/20160307_challenge_257_easy_in_what_year_were/> this Reddit challenge</a>, which asks the programmer to find the year(s) in history when the most US presidents were alive given each president&rsquo;s birth and death date.</p>
+<p>Usually, when <a href=http://infiniteundo.com/post/25326999628/falsehoods-programmers-believe-about-time>working with dates and times in programming</a>, it&rsquo;s best to convert to object types that inherently have some assumptions about time and date already built in to allow for easy addition, subtraction, and date conversion.</p>
+<p>In Python, the <a href=https://docs.python.org/2/library/datetime.html>datetime library</a> provides convenient ways to work with date and time data, as well as converting data to and from those formats.</p>
+<p>There used to be a <a href=http://effbot.org/librarybook/time.htm>module called time</a> that was not based exclusively on object-oriented patterns. Datetime is an update of time.</p>
+<p>Datetime has several object types, (as seen in the Python REPL):</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>	<span style=color:#f92672>&gt;&gt;&gt;</span><span style=color:#f92672>import</span> datetime
+	<span style=color:#f92672>&gt;&gt;&gt;</span> dir(datetime)
+	[<span style=color:#e6db74>&#39;MAXYEAR&#39;</span>, <span style=color:#e6db74>&#39;MINYEAR&#39;</span>, <span style=color:#e6db74>&#39;__doc__&#39;</span>, <span style=color:#e6db74>&#39;__file__&#39;</span>, <span style=color:#e6db74>&#39;__name__&#39;</span>, <span style=color:#e6db74>&#39;__package__&#39;</span>, <span style=color:#e6db74>&#39;date&#39;</span>, <span style=color:#e6db74>&#39;datetime&#39;</span>, <span style=color:#e6db74>&#39;datetime_CAPI&#39;</span>, <span style=color:#e6db74>&#39;time&#39;</span>, <span style=color:#e6db74>&#39;timedelta&#39;</span>, <span style=color:#e6db74>&#39;tzinfo&#39;</span>]
+</code></pre></div><p>I was particularly interested in coverting all the years to datetime or date objects and working with them that way.</p>
+<p>A datetime object looks like this, where you&rsquo;re given back year-month-day-hour-minute-second-microcecond.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>
+	<span style=color:#f92672>&gt;&gt;&gt;</span>datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>now()
+	<span style=color:#f92672>&gt;&gt;&gt;</span>datetime<span style=color:#f92672>.</span>datetime(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>16</span>, <span style=color:#ae81ff>32</span>, <span style=color:#ae81ff>12</span>, <span style=color:#ae81ff>385142</span>)
+	
+
+	<span style=color:#f92672>&gt;&gt;&gt;</span>now <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>now()
+	<span style=color:#f92672>&gt;&gt;&gt;</span> type(now)
+	<span style=color:#f92672>&gt;&gt;&gt;&lt;</span>type <span style=color:#e6db74>&#39;datetime.datetime&#39;</span><span style=color:#f92672>&gt;</span>
+
+A date object <span style=color:#f92672>is</span> very similar, but does <span style=color:#f92672>not</span> include the time<span style=color:#f92672>.</span> 
+
+	<span style=color:#f92672>&gt;&gt;&gt;</span>nowday <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>date<span style=color:#f92672>.</span>today()
+	<span style=color:#f92672>&gt;&gt;&gt;</span> nowday
+	<span style=color:#f92672>&gt;&gt;&gt;</span>datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>9</span>)
+</code></pre></div><p>To convert strings to these types of object, Python&rsquo;s datetime has strptime, a function that has an equivalent in most modern languages.</p>
+<p>I always get strptime and strftime confused, so here are silly mnemonics I can remember:</p>
+<ul>
+<li><strong>strptime</strong> - converts strings to datetime objects (stri<strong>p</strong>s strings to datetime)</li>
+<li><strong>strftime</strong> - converts datetime objects to specific human-readable format while still maintaining their datetimey-ness. (F is for formatting)</li>
+</ul>
+<p>So let&rsquo;s say I have a date that&rsquo;s a string:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>   x <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;19 Aug 2015&#34;</span>
+   type(x)
+   <span style=color:#f92672>&lt;</span>type <span style=color:#e6db74>&#39;str&#39;</span><span style=color:#f92672>&gt;</span>
+</code></pre></div><p>And I want to read it into a datetime object:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>	datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(x, <span style=color:#e6db74>&#39;</span><span style=color:#e6db74>%d</span><span style=color:#e6db74> %b %Y&#39;</span>)
+	<span style=color:#f92672>&gt;&gt;&gt;</span>datetime<span style=color:#f92672>.</span>datetime(<span style=color:#ae81ff>2015</span>, <span style=color:#ae81ff>8</span>, <span style=color:#ae81ff>19</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>)
+</code></pre></div><p>Then I can add days, years, subtract days, etc. The ability to automatically do math with differing units of time is what makes this module so convenient.</p>
+<p>I can then spit that calculation back out in any format I want with strftime, for example, I wanted to see the entire month:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>	<span style=color:#f92672>&gt;&gt;&gt;</span> y <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(x, <span style=color:#e6db74>&#39;</span><span style=color:#e6db74>%d</span><span style=color:#e6db74> %b %Y&#39;</span>)
+	<span style=color:#f92672>&gt;&gt;&gt;</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strftime(y, <span style=color:#e6db74>&#39;%B-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>-%Y&#39;</span>)
+	<span style=color:#e6db74>&#39;August-19-2015&#39;</span>
+</code></pre></div><p>There are a couple caveats that make strftime and strptime really annoying.</p>
+<h2 id=strptime-and-formatting>
+Strptime and formatting:
+<a class=anchor href=#strptime-and-formatting>#</a>
+</h2>
+<p>The first is that the formatting of the input string needs to match exactly, otherwise the assignment throws an exception. This was from when I omitted the spaces from the formatting paramter:</p>
+<pre><code>ValueError: time data '19 Aug 2015' does not match format '%d%b%Y'
+</code></pre>
+<p>This can be extremely irritating if you have data in the same column that changes formats. In this case, you have to write <code>try/except</code> blocks or find some way of working around this &ldquo;limitation.&rdquo;</p>
+<h2 id=strftime-and-python-23>
+Strftime and Python 2/3:
+<a class=anchor href=#strftime-and-python-23>#</a>
+</h2>
+<p>The other VERY annoying thing is that strptime does not work on data earlier than 1900.</p>
+<p>I came across one when I was trying to add and subtract historical dates of presidents born before 1900. <a href=http://stackoverflow.com/questions/10263956/use-datetime-strftime-on-years-before-1900-require-year-1900>You get the following</a>:</p>
+<pre><code>ValueError: year=1601 is before 1900; the datetime strftime() methods require year &gt;= 1900
+</code></pre>
+<p>The <a href=https://docs.python.org/2/library/datetime.html#strftime-behavior>documentation states</a>, and I&rsquo;m guessing it&rsquo;s a carryover from C that is no longer relevant to currnent computing memory constraints. <a href=http://exceluser.com/formulas/earlydates.htm>Excel</a> has the same issue.</p>
+<blockquote>
+<p>The exact range of years for which strftime() works also varies across platforms. Regardless of platform, years before 1900 cannot be used.</p>
+</blockquote>
+<p>The easy fix for this is to use Python 3, which <a href=https://bugs.python.org/issue1777412>accounts for it</a>:</p>
+<p>Here&rsquo;s my simple script, <code>datetimenew.py</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>	<span style=color:#f92672>from</span> datetime <span style=color:#f92672>import</span> datetime
+	x <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;19 Aug 1500&#34;</span>
+	y <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>strptime(x, <span style=color:#e6db74>&#39;</span><span style=color:#e6db74>%d</span><span style=color:#e6db74> %b %Y&#39;</span>)
+	outformat <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>strftime(y, <span style=color:#e6db74>&#39;%Y&#39;</span>)
+	print (outformat)
+
+If I <span style=color:#66d9ef>try</span> to run it <span style=color:#f92672>in</span> Python <span style=color:#ae81ff>2</span>:
+ 
+	vboykis<span style=color:#960050;background-color:#1e0010>$</span> python datetimenew<span style=color:#f92672>.</span>py
+	Traceback (most recent call last):
+  		File <span style=color:#e6db74>&#34;datetimenew.py&#34;</span>, line <span style=color:#ae81ff>5</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    	outformat <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>strftime(y, <span style=color:#e6db74>&#39;%Y&#39;</span>)
+	<span style=color:#a6e22e>ValueError</span>: year<span style=color:#f92672>=</span><span style=color:#ae81ff>1500</span> <span style=color:#f92672>is</span> before <span style=color:#ae81ff>1900</span>; the 	datetime strftime() methods require year <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>1900</span>
+</code></pre></div><p>And 3:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>	vboykis<span style=color:#960050;background-color:#1e0010>$</span> python3 datetimenew<span style=color:#f92672>.</span>py
+	<span style=color:#ae81ff>1500</span>
+<span style=color:#960050;background-color:#1e0010>```</span>python
+
+Yet another reason to <span style=color:#66d9ef>finally</span> make that switch ;)<span style=color:#f92672>.</span> 
+
+Or to use isoformat <span style=color:#f92672>from</span> date instead:
+<span style=color:#960050;background-color:#1e0010>```</span>python
+	date<span style=color:#f92672>.</span>isoformat()
+	Return a string representing the date <span style=color:#f92672>in</span> ISO <span style=color:#ae81ff>8601</span> format, <span style=color:#960050;background-color:#1e0010>‘</span>YYYY<span style=color:#f92672>-</span>MM<span style=color:#f92672>-</span>DD<span style=color:#960050;background-color:#1e0010>’</span><span style=color:#f92672>.</span> For example, date(<span style=color:#ae81ff>2002</span>, <span style=color:#ae81ff>12</span>, <span style=color:#ae81ff>4</span>)<span style=color:#f92672>.</span>isoformat() <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;2002-12-04&#39;</span>
+</code></pre></div></article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/dee6518ac213ef9f8c5a7b9cb9c182d55ca94531 title="Last modified by Vicki | Dec 29, 2021" target=_blank rel=noopener>
+<img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Dec 29, 2021</span>
+</a>
+</div>
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+</main>
+</body>
+</html>

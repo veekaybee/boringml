@@ -13,7 +13,7 @@
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.37a41297fff6b6c94c3a34b9b65b6baad3b1b941121ff1111e0a738e838981c1.js integrity="sha256-N6QSl//2tslMOjS5tltrqtOxuUESH/ERHgpzjoOJgcE=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.64465ed3fe966d091d308affe9c27729002dbd0ca799ae6f43c3be2910f16e66.js integrity="sha256-ZEZe0/6WbQkdMIr/6cJ3KQAtvQynma5vQ8O+KRDxbmY=" crossorigin=anonymous></script>
 <link rel=alternate type=application/rss+xml href=http://boringml.com/docs/frameworks/index.xml title="Boring Machine Learning">
 </head>
 <body dir=ltr>
@@ -33,84 +33,97 @@
 <ul id=book-search-results></ul>
 </div>
 <ul>
-<li class=book-section-flat>
-<a href=http://boringml.com/docs/languages/>Languages</a>
+<li>
+<input type=checkbox id=section-d41e3b1e7be18fdedcdd8781529c68cd class=toggle>
+<label for=section-d41e3b1e7be18fdedcdd8781529c68cd class="flex justify-between">
+<a href=http://boringml.com/docs/php/>Php</a>
+</label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/languages/php/>Php</a>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/php/arrays/>Arrays</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/languages/php/post1-copy/>Spark</a>
+<a href=http://boringml.com/docs/php/arrays/>is_set</a>
 </li>
 </ul>
 </li>
 <li>
-<a href=http://boringml.com/docs/languages/python/>Python</a>
+<input type=checkbox id=section-dbec22d72f9c0b4ccf9d173e77fe928c class=toggle>
+<label for=section-dbec22d72f9c0b4ccf9d173e77fe928c class="flex justify-between">
+<a href=http://boringml.com/docs/python/>Python</a>
+</label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/languages/python/post1/>Pandas</a>
+<a href=http://boringml.com/docs/python/strptime/>strptime and strftime</a>
 </li>
 <li>
-<a href=http://boringml.com/docs/languages/python/post1-copy/>Spark</a>
+<a href=http://boringml.com/docs/python/venv/>venv</a>
 </li>
 </ul>
 </li>
 <li>
-<a href=http://boringml.com/docs/languages/scala/>Scala</a>
+<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle>
+<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between">
+<a href=http://boringml.com/docs/recsys/>Recsys</a>
+</label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/languages/scala/post1/>Scalding</a>
+<a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a>
 </li>
 </ul>
 </li>
+<li>
+<input type=checkbox id=section-38bb35919265222d517dd5f8edf2719a class=toggle>
+<label for=section-38bb35919265222d517dd5f8edf2719a class="flex justify-between">
+<a href=http://boringml.com/docs/scala/>Scala</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/scala/post1/>Scalding</a>
+</li>
 </ul>
 </li>
-<li class=book-section-flat>
-<span>Frameworks</span>
+<li>
+<input type=checkbox id=section-e6b75252305a86840411664cb2e84e9c class=toggle>
+<label for=section-e6b75252305a86840411664cb2e84e9c class="flex justify-between">
+<a href=http://boringml.com/docs/sql/>SQL</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/sql/arrays/>Legible SQL</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
+<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
+<a role=button>Computer Science</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-26e813df4c1d2ae66edc7adef58c4759 class=toggle checked>
+<label for=section-26e813df4c1d2ae66edc7adef58c4759 class="flex justify-between">
+<a role=button class=active>Frameworks</a>
+</label>
 <ul>
 <li>
 <a href=http://boringml.com/docs/frameworks/airflow/>Airflow</a>
 </li>
 <li>
-<a href=http://boringml.com/docs/frameworks/aws-lambads/>Aws Lambads</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/frameworks/details/>Details</a>
+<a href=http://boringml.com/docs/frameworks/aws/>Aws</a>
 </li>
 <li>
 <a href=http://boringml.com/docs/frameworks/kubernetes/>Kubernetes</a>
 </li>
-</ul>
-</li>
 <li class=book-section-flat>
-<span>Recommender Systems</span>
+<span>Spark</span>
 <ul>
 <li>
-<a href=http://boringml.com/docs/recommender-systems/columns/>Columns</a>
+<a href=http://boringml.com/docs/frameworks/spark/create-data-python/>Sample data in PySpark</a>
 </li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/details/>Details</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/expand/>Expand</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/hints/>Hints</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/katex/>Katex</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/mermaid/>Mermaid</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/scalding/>Scalding</a>
-</li>
-<li>
-<a href=http://boringml.com/docs/recommender-systems/tabs/>Tabs</a>
+</ul>
 </li>
 </ul>
 </li>
@@ -137,7 +150,7 @@
 <article class=markdown></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/1502875b7fa61b5d20de80536afa174b7fa0051b title="Last modified by Vicki | Dec 29, 2021" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/dee6518ac213ef9f8c5a7b9cb9c182d55ca94531 title="Last modified by Vicki | Dec 29, 2021" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>Dec 29, 2021</span>
 </a>
