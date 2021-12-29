@@ -1,3 +1,42 @@
 baseURL = 'http://boringml.com'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Boring Machine Learning'
+
+# (Optional) Set this to true to enable 'Last Modified by' date and git author
+#  information on 'doc' type pages.
+enableGitInfo = true
+
+
+[params]
+  # (Optional, default light) Sets color theme: light, dark or auto.
+  # Theme 'auto' switches between dark and light modes based on browser/os preferences
+  BookTheme = 'light'
+
+
+    # (Optional, default none) Set the path to a logo for the book. If the logo is
+  # /static/logo.png then the path would be 'logo.png'
+  BookLogo = 'logo.png'
+
+  # Set source repository location.
+  # Used for 'Last Modified' and 'Edit this page' links.
+  BookRepo = 'https://github.com/veekaybee/boringml'
+
+
+
+  # Specifies commit portion of the link to the page's last modified commit hash for 'doc' page
+  # type.
+  # Required if 'BookRepo' param is set.
+  # Value used to construct a URL consisting of BookRepo/BookCommitPath/<commit-hash>
+  # Github uses 'commit', Bitbucket uses 'commits'
+  BookCommitPath = 'commit'
+
+    # (Optional, default January 2, 2006) Configure the date format used on the pages
+  # - In git information
+  # - In blog posts
+  BookDateFormat = 'Jan 2, 2006'
+
+
+    # (Optional, default true) Enables search function with flexsearch,
+  # Index is built on fly, therefore it might slowdown your website.
+  # Configuration for indexing can be adjusted in i18n folder per language.
+  BookSearch = true
