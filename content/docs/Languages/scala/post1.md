@@ -1,5 +1,5 @@
 ---
-title: Without ToC
+title: Scalding
 weight: 2
 bookToc: false
 ---
