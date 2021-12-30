@@ -1,8 +1,7 @@
-+++
-title = "Introduction"
-type = "docs"
-bookToC = false
-+++
+---
+title: Introduction
+type: docs
+---
 
 # Machine Learning: The Boring Parts
 
@@ -13,5 +12,4 @@ This is not that site. This site is one that I always wanted to see: the interna
 It and its layout are also constantly evolving as I map different concepts together, make changes and edits, so don't be surprised if content moves around. 
 
 If you have comments or corrections, [feel free to submit a PR.](https://github.com/veekaybee/boringml) 
-
 
