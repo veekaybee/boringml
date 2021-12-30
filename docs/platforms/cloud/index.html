@@ -1,0 +1,243 @@
+<!doctype html><html lang=en dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Cloud versus on-prem #  A rising concern as companies continue moving infrastructure to the cloud is vendor-lock in.
+For example, I recently came across a post from 2017 discussing the impact of Lambdas locking you into the AWS ecosystem.
+ &ldquo;It&rsquo;s code that tied not just to hardware – which we&rsquo;ve seen before – but to a data center, you can&rsquo;t even get the hardware yourself. And that hardware is now custom fabbed for the cloud providers with dark fiber that runs all around the world, just for them.">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content>
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://boringml.com/docs/platforms/cloud/">
+<title>Cloud | Boring Machine Learning</title>
+<link rel=manifest href=/manifest.json>
+<link rel=icon href=/favicon.png type=image/x-icon>
+<link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
+<script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.cd3f8ff369aceb0b0cc4435a4e66c514c4908121b3d5f8356a65efa8590e4a88.js integrity="sha256-zT+P82ms6wsMxENaTmbFFMSQgSGz1fg1amXvqFkOSog=" crossorigin=anonymous></script>
+<link rel=alternate type=application/rss+xml href=http://boringml.com/docs/platforms/cloud/index.xml title="Boring Machine Learning">
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/><img src=/logo.png alt=Logo><span>Boring Machine Learning</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul>
+<li class=book-section-flat>
+<a href=http://boringml.com/docs/languages/>Languages</a>
+<ul>
+<li>
+<input type=checkbox id=section-8164995f4ca3a5480a8dc157c5688ca8 class=toggle>
+<label for=section-8164995f4ca3a5480a8dc157c5688ca8 class="flex justify-between">
+<a href=http://boringml.com/docs/languages/python/>Python</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/languages/python/strptime/>strptime and strftime</a>
+</li>
+<li>
+<a href=http://boringml.com/docs/languages/python/venv/>venv</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-16696fcaf676797c81cf5e45e5de0279 class=toggle>
+<label for=section-16696fcaf676797c81cf5e45e5de0279 class="flex justify-between">
+<a href=http://boringml.com/docs/languages/scala/>Scala</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/languages/scala/post1/>Scalding</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle>
+<label for=section-724b24b6e475c23be17bd4b512fe832d class="flex justify-between">
+<a href=http://boringml.com/docs/languages/sql/>SQL</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/languages/sql/arrays/>Legible SQL</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-32778f62eb3265d41d230b051a98557a class=toggle>
+<label for=section-32778f62eb3265d41d230b051a98557a class="flex justify-between">
+<a href=http://boringml.com/docs/languages/java/>Java</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/languages/java/arrays/>is_set</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle>
+<label for=section-5244711b3ae5943d25076a75246efe07 class="flex justify-between">
+<a href=http://boringml.com/docs/languages/php/>PHP</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/languages/php/arrays/>is_set</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle>
+<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between">
+<a href=http://boringml.com/docs/recsys/>Recsys</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/recsys/mmds/>MMDS</a>
+</li>
+<li>
+<a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle checked>
+<label for=section-993c2a7ec1f9c0d65a914f6698e5bb93 class="flex justify-between">
+<a href=http://boringml.com/docs/platforms/>Platforms</a>
+</label>
+<ul>
+<li>
+<input type=checkbox id=section-d34f17f99c2c17870b793497139db159 class=toggle checked>
+<label for=section-d34f17f99c2c17870b793497139db159 class="flex justify-between">
+<a href=http://boringml.com/docs/platforms/cloud/ class=active>Cloud</a>
+</label>
+<ul>
+<li>
+<input type=checkbox id=section-9bf714ba1159b4c6def009bc6eac7dc0 class=toggle>
+<label for=section-9bf714ba1159b4c6def009bc6eac7dc0 class="flex justify-between">
+<a href=http://boringml.com/docs/platforms/cloud/aws/>Aws</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>AWS</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href=http://boringml.com/docs/platforms/kubernetes/>Kubernetes</a>
+</li>
+<li>
+<input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle>
+<label for=section-1b21d1cd61c37cc32012a0886c8a3a1e class="flex justify-between">
+<a role=button>Spark</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/platforms/spark/create-data-python/>Sample data in PySpark</a>
+</li>
+</ul>
+</li>
+<li>
+<a href=http://boringml.com/docs/platforms/airflow/>Airflow</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
+<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
+<a role=button>Computer Science</a>
+</label>
+<ul>
+<li>
+<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
+</li>
+</ul>
+</li>
+<li>
+<a href=http://boringml.com/docs/what-is-ml/>What is machine learning engineering?</a>
+</li>
+<li>
+<a href=http://boringml.com/docs/about/>About Me</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>Cloud</strong>
+<label for=toc-control>
+<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents></nav>
+</aside>
+</header>
+<article class=markdown><h1 id=cloud-versus-on-prem>
+Cloud versus on-prem
+<a class=anchor href=#cloud-versus-on-prem>#</a>
+</h1>
+<p>A rising concern as companies continue moving infrastructure to the cloud is vendor-lock in.</p>
+<p>For example, I recently came across <a href=https://www.theregister.co.uk/2017/11/06/coreos_kubernetes_v_world/>a post from 2017</a> discussing the impact of Lambdas locking you into the AWS ecosystem.</p>
+<blockquote>
+<p>&ldquo;It&rsquo;s code that tied not just to hardware – which we&rsquo;ve seen before – but to a data center, you can&rsquo;t even get the hardware yourself. And that hardware is now custom fabbed for the cloud providers with dark fiber that runs all around the world, just for them. So literally the application you write will never get the performance or responsiveness or the ability to be ported somewhere else without having the deployment footprint of Amazon.&rdquo;</p>
+</blockquote>
+<p>It&rsquo;s true that there is something unnerving about putting all of your trust in a microservic-ey piece of code that runs in a given, custom run-time, with architectures <a href=https://mikhail.io/2018/08/serverless-cold-start-war/>that are hard to reverse-engineer</a>, and take <a href=https://arxiv.org/pdf/1812.03651.pdf>platform-specific triggers (PDF)</a>, like S3 calls, as input events.</p>
+<p>That&rsquo;s a fair assessment. But evaluating serverless functionality on its own, without looking at the alternative path, is not entirely fair. Let&rsquo;s say you&rsquo;re trying to solve the problem of cleaning up log files (by, for example, anonymizing or hashing customer IDs) that land on a minute-by-minute basis in S3 and puts them in a different S3 bucket (or other, vendor-neutral object storage location).</p>
+<p>You can write a Lambda function that processes them and puts them in a different bucket. The vendor-neutral alternatives would be something like:</p>
+<ol>
+<li>Setting up a <a href=https://spark.apache.org/streaming/>Spark streaming</a> application to process the files and put them in S3 or another file system.</li>
+<li>Creating a complicated bash script that runs (potentially with the help of a scheduler like <a href=https://airbnb.io/projects/airflow/>Airflow</a>)</li>
+<li>Setting up a <a href=https://kafka.apache.org/documentation/streams/>Kafka streams</a> application</li>
+</ol>
+<p>Each of these is vendor-independent (i.e. can run on an EC2/EMR instance, or in your own data center), but each also offers its own unique set of challenges, and locks you into that architecture moving forward. It&rsquo;s possible your company won&rsquo;t want to be on AWS in 2-3 years, and you&rsquo;ll be stuck trying to figure out how to migrate Lambdas to a different architecture. But it&rsquo;s also possible for Kafka or Spark features to break, for your Python program to become too inefficient, for Java 11 features to break on Java 12, and so on.</p>
+<p>On-prem is a lock-in. Cloud is a lock-in. Every single language you program in is a type of lock-in. Python is easy to get started with, but soon you run into packaging issues and are optimizing the <a href="https://instagram-engineering.com/dismissing-python-garbage-collection-at-instagram-4dca40b29172?gi=dde90f1d01a">garbage collector</a>. Scala is great, but <a href=https://www.infoq.com/news/2011/11/yammer-scala>everyone</a> <a href=https://movio.co/blog/migrate-Scala-to-Go/>winds up</a> migrating <a href=https://www.quora.com/Is-LinkedIn-getting-rid-of-Scala>away</a> from it. And on and on.</p>
+<p>Every piece of code written in a given language or framework is a step away from any other language, and five more minutes you&rsquo;ll have to spend migrating it to something else. That&rsquo;s fine. You just have to decide what you&rsquo;re willing to be locked into.</p>
+<p>People try to hedge these bets by designing truly platform-agnostic, flexible applications. But, it takes a long time to design a truly generic solution, because humans are terrible at long-term forecasting trends. Who could have predicted that Hadoop only has a lifecycle for 3-4 years? Who could have foreseen the shift from SAS into R? Who foresaw the spiraling growth of the JavaScript community? It&rsquo;s hard to design resilient applications for needs 6 months into the future, let alone something that will run in five years.</p>
+<p>Code these days becomes obsolete so quickly, regardless of what&rsquo;s chosen. By the time your needs change, by the time the latest framework is obsolete, all of the code will be rotten anyway. Maybe the Postgres database is still going strong, but Node isn&rsquo;t in favor anymore. AWS and Google Cloud aren&rsquo;t going anywhere over the next 5-10 years.</p>
+<p>The most dangerous feature about these articles examining cloud lock-in is that they introduce a kind of paralysis into teams that result in applications never being completely fleshed out or finished.</p>
+<p>In contrast to earlier decades, today we are cursed with an overabundance of technologies that mean that any project starts with a complete evaluation of what makes the most sense. It&rsquo;s possible to mess up. Even the best senior developers make bad architecture and vendor choices. But the good ones also know that, in order to understand whether something is a bad choice, they need to make the current process work.</p>
+<p>It&rsquo;s possible to spend hours in architecture debates and reading the pros and cons on HN, but what counts most is having something working that you can evaluate. So, write your applications, spin up your Lambdas, keep an ear to the ground, but go to production first.</p>
+</article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
+<img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Dec 30, 2021</span>
+</a>
+</div>
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents></nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

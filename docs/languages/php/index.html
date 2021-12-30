@@ -2,23 +2,19 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="This post is an expansion of this tweet:
-If I had to pick a single programming concept where understanding it is like a superpower, it would probably be the hash map (aka in Python, the humble dictionary) because I've seen the pattern come up in almost every kind of data/programming work I've ever done.
-&mdash; Vicki (*args,**kwargs) (@vboykis) July 8, 2020  Hash Aggregate Here #  But data work also has its own unique patterns, and I want to talk about one of these that I think is important for all of us to carry around in our back pockets: the humble hash aggregate.">
+<meta name=description content="PHP #  People are always surprised when I say that I use PHP as a machine learning enginer. I&rsquo;d say on any given week, about 30-35% of my time is spent using PHP to serve recommendations in the front-end of the app, and if you work end-to-end with recommender systems, or any machine learning system that gets served as part of a web app, chances are you&rsquo;ll work heavily with the backend language serving it, too.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Hash aggregates">
-<meta property="og:description" content="This post is an expansion of this tweet:
-If I had to pick a single programming concept where understanding it is like a superpower, it would probably be the hash map (aka in Python, the humble dictionary) because I've seen the pattern come up in almost every kind of data/programming work I've ever done.
-&mdash; Vicki (*args,**kwargs) (@vboykis) July 8, 2020  Hash Aggregate Here #  But data work also has its own unique patterns, and I want to talk about one of these that I think is important for all of us to carry around in our back pockets: the humble hash aggregate.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://boringml.com/docs/computer-science/hash-aggregate/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2021-12-29T15:41:33-05:00">
-<title>Hash aggregates | Boring Machine Learning</title>
+<meta name=color-scheme content="light dark"><meta property="og:title" content="PHP">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://boringml.com/docs/languages/php/">
+<title>PHP | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
 <script defer src=/en.search.min.cd3f8ff369aceb0b0cc4435a4e66c514c4908121b3d5f8356a65efa8590e4a88.js integrity="sha256-zT+P82ms6wsMxENaTmbFFMSQgSGz1fg1amXvqFkOSog=" crossorigin=anonymous></script>
+<link rel=alternate type=application/rss+xml href=http://boringml.com/docs/languages/php/index.xml title="Boring Machine Learning">
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -88,9 +84,9 @@ If I had to pick a single programming concept where understanding it is like a s
 </ul>
 </li>
 <li>
-<input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle>
+<input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle checked>
 <label for=section-5244711b3ae5943d25076a75246efe07 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/php/>PHP</a>
+<a href=http://boringml.com/docs/languages/php/ class=active>PHP</a>
 </label>
 <ul>
 <li>
@@ -159,13 +155,13 @@ If I had to pick a single programming concept where understanding it is like a s
 </ul>
 </li>
 <li>
-<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle checked>
+<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
 <label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
 <a role=button>Computer Science</a>
 </label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/computer-science/hash-aggregate/ class=active>Hash aggregates</a>
+<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
 </li>
 </ul>
 </li>
@@ -186,39 +182,26 @@ If I had to pick a single programming concept where understanding it is like a s
 <label for=menu-control>
 <img src=/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Hash aggregates</strong>
+<strong>PHP</strong>
 <label for=toc-control>
+<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
 </div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents></nav>
+</aside>
 </header>
-<article class=markdown><figure><img src=https://raw.githubusercontent.com/veekaybee/veekaybee.github.io/master/static/images/checkers.png width=300px>
-</figure>
-<p>This post is an expansion of this tweet:</p>
-<blockquote class=twitter-tweet><p lang=en dir=ltr>If I had to pick a single programming concept where understanding it is like a superpower, it would probably be the hash map (aka in Python, the humble dictionary) because I've seen the pattern come up in almost every kind of data/programming work I've ever done.</p>&mdash; Vicki (*args,**kwargs) (@vboykis) <a href="https://twitter.com/vboykis/status/1280911880157093888?ref_src=twsrc%5Etfw">July 8, 2020</a></blockquote>
-<script async src=https://platform.twitter.com/widgets.js></script>
-<h2 id=hash-aggregate-here>
-Hash Aggregate Here
-<a class=anchor href=#hash-aggregate-here>#</a>
-</h2>
-<p>But data work also has its own unique patterns, and I want to talk about one of these that I think is important for all of us to carry around in our back pockets: the humble hash aggregate. The hash aggregate <a href=https://jakevdp.github.io/blog/2017/03/22/group-by-from-scratch/>works like this</a>:</p>
-<figure><img src=https://raw.githubusercontent.com/veekaybee/veekaybee.github.io/master/static/images/split-apply-combine.png width=600px>
-</figure>
-<p>You have a multidimensional array (or, as us plebes say, table) that contains numerous instances of similar labels. What you want to know is the distinct counts of each category. The implemented algorithm splits the matrix by key and sums the values and then returns the reduced matrix that has only unique keys and the sum values to the user.</p>
-<p>It&rsquo;s a very simple and ingenious algorithm, and it shows up over and over and over again. If you&rsquo;ve ever done a GROUP BY statement in SQL, you&rsquo;ve used the hash aggregate function. Python&rsquo;s dictionary operations utilize hash aggregates. And so does Pandas' split-apply-combine (pictured here from Jake&rsquo;s great post) And, so does Excel&rsquo;s <a href=https://en.wikipedia.org/wiki/Pivot_table>Pivot table function</a>. So does <code>sort filename | uniq -c | sort -nr</code> in Unix. So does the map/reduce pattern that started in Hadoop, <a href=https://www.xplenty.com/blog/apache-spark-vs-hadoop-mapreduce/>and has been implemented in-memory in Spark. </a> An <a href=https://en.wikipedia.org/wiki/Inverted_index>inverted index</a>, the foundation for Elasticsearch (and many search and retrieval platforms) is a hash aggregate.</p>
-<h2 id=so-what>
-So what?
-<a class=anchor href=#so-what>#</a>
-</h2>
-<p>If you&rsquo;ve worked with either development or data for any length of time, it&rsquo;s almost guaranteed that you&rsquo;ve come across the need to get unique categories of things and then count the things in those categories. In some cases, you might need to build your own implementation of GROUP BY because it doesn&rsquo;t work in your language or framework of choice.</p>
-<p>My personal opinion is that every data-centric framework that&rsquo;s been around long enough tends to SQL, so everything will <a href=https://docs.confluent.io/5.2.0/ksql/docs/developer-guide/aggregate-streaming-data.html>eventually implement hash aggregation.</a></p>
-<p>Once you understand that hash aggregation is a common pattern, it makes sense to observe it at work, learn more about how to optimize it, and generally think about it.</p>
-<p>Once we know that this pattern has a name and exists, we have a sense of power over our data work. Confuscius (or whoever attributed the quote to him) once said, “The beginning of wisdom is to call things by their proper name," and either he was once a curious toddler, or an MLE looking to better understand the history and context of his architecture.</p>
+<article class=markdown><h1 id=php>
+PHP
+<a class=anchor href=#php>#</a>
+</h1>
+<p>People are always surprised when I say that I use PHP as a machine learning enginer. I&rsquo;d say on any given week, about 30-35% of my time is spent using PHP to serve recommendations in the front-end of the app, and if you work end-to-end with recommender systems, or any machine learning system that gets served as part of a web app, chances are you&rsquo;ll work heavily with the backend language serving it, too.</p>
 </article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/dee6518ac213ef9f8c5a7b9cb9c182d55ca94531 title="Last modified by Vicki | Dec 29, 2021" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Dec 29, 2021</span>
+<span>Dec 30, 2021</span>
 </a>
 </div>
 </div>
@@ -228,6 +211,11 @@ So what?
 </div>
 <label for=menu-control class="hidden book-menu-overlay"></label>
 </div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents></nav>
+</div>
+</aside>
 </main>
 </body>
 </html>

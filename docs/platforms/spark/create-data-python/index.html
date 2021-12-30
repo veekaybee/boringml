@@ -2,18 +2,16 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="This post is an expansion of this tweet:
-If I had to pick a single programming concept where understanding it is like a superpower, it would probably be the hash map (aka in Python, the humble dictionary) because I've seen the pattern come up in almost every kind of data/programming work I've ever done.
-&mdash; Vicki (*args,**kwargs) (@vboykis) July 8, 2020  Hash Aggregate Here #  But data work also has its own unique patterns, and I want to talk about one of these that I think is important for all of us to carry around in our back pockets: the humble hash aggregate.">
+<meta name=description content="Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on sc.parallelize.
+from pyspark.sql.session import SparkSession rdd = sc.parallelize([(0,None), (0,1), (0,2), (1,2), (1,10), (1,20), (3,18), (3,18), (3,18)]) df=rdd.toDF(['id','score']) df.show() +---+-----+ | id|score| +---+-----+ | 0| null| | 0| 1| | 0| 2| | 1| 2| | 1| 10| | 1| 20| | 3| 18| | 3| 18| | 3| 18| +---+-----+ df.printSchema() root |-- id: long (nullable = true) |-- score: long (nullable = true) None is a special keyword in Python that will let you create nullable fields.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Hash aggregates">
-<meta property="og:description" content="This post is an expansion of this tweet:
-If I had to pick a single programming concept where understanding it is like a superpower, it would probably be the hash map (aka in Python, the humble dictionary) because I've seen the pattern come up in almost every kind of data/programming work I've ever done.
-&mdash; Vicki (*args,**kwargs) (@vboykis) July 8, 2020  Hash Aggregate Here #  But data work also has its own unique patterns, and I want to talk about one of these that I think is important for all of us to carry around in our back pockets: the humble hash aggregate.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Sample data in PySpark">
+<meta property="og:description" content="Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on sc.parallelize.
+from pyspark.sql.session import SparkSession rdd = sc.parallelize([(0,None), (0,1), (0,2), (1,2), (1,10), (1,20), (3,18), (3,18), (3,18)]) df=rdd.toDF(['id','score']) df.show() +---+-----+ | id|score| +---+-----+ | 0| null| | 0| 1| | 0| 2| | 1| 2| | 1| 10| | 1| 20| | 3| 18| | 3| 18| | 3| 18| +---+-----+ df.printSchema() root |-- id: long (nullable = true) |-- score: long (nullable = true) None is a special keyword in Python that will let you create nullable fields.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="http://boringml.com/docs/computer-science/hash-aggregate/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2021-12-29T15:41:33-05:00">
-<title>Hash aggregates | Boring Machine Learning</title>
+<meta property="og:url" content="http://boringml.com/docs/platforms/spark/create-data-python/"><meta property="article:section" content="docs">
+<meta property="article:modified_time" content="2021-12-30T09:44:09-05:00">
+<title>Sample data in PySpark | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
@@ -115,7 +113,7 @@ If I had to pick a single programming concept where understanding it is like a s
 </ul>
 </li>
 <li>
-<input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle>
+<input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle checked>
 <label for=section-993c2a7ec1f9c0d65a914f6698e5bb93 class="flex justify-between">
 <a href=http://boringml.com/docs/platforms/>Platforms</a>
 </label>
@@ -143,13 +141,13 @@ If I had to pick a single programming concept where understanding it is like a s
 <a href=http://boringml.com/docs/platforms/kubernetes/>Kubernetes</a>
 </li>
 <li>
-<input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle>
+<input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle checked>
 <label for=section-1b21d1cd61c37cc32012a0886c8a3a1e class="flex justify-between">
 <a role=button>Spark</a>
 </label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/platforms/spark/create-data-python/>Sample data in PySpark</a>
+<a href=http://boringml.com/docs/platforms/spark/create-data-python/ class=active>Sample data in PySpark</a>
 </li>
 </ul>
 </li>
@@ -159,13 +157,13 @@ If I had to pick a single programming concept where understanding it is like a s
 </ul>
 </li>
 <li>
-<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle checked>
+<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
 <label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
 <a role=button>Computer Science</a>
 </label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/computer-science/hash-aggregate/ class=active>Hash aggregates</a>
+<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
 </li>
 </ul>
 </li>
@@ -186,39 +184,61 @@ If I had to pick a single programming concept where understanding it is like a s
 <label for=menu-control>
 <img src=/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Hash aggregates</strong>
+<strong>Sample data in PySpark</strong>
 <label for=toc-control>
 </label>
 </div>
 </header>
-<article class=markdown><figure><img src=https://raw.githubusercontent.com/veekaybee/veekaybee.github.io/master/static/images/checkers.png width=300px>
-</figure>
-<p>This post is an expansion of this tweet:</p>
-<blockquote class=twitter-tweet><p lang=en dir=ltr>If I had to pick a single programming concept where understanding it is like a superpower, it would probably be the hash map (aka in Python, the humble dictionary) because I've seen the pattern come up in almost every kind of data/programming work I've ever done.</p>&mdash; Vicki (*args,**kwargs) (@vboykis) <a href="https://twitter.com/vboykis/status/1280911880157093888?ref_src=twsrc%5Etfw">July 8, 2020</a></blockquote>
-<script async src=https://platform.twitter.com/widgets.js></script>
-<h2 id=hash-aggregate-here>
-Hash Aggregate Here
-<a class=anchor href=#hash-aggregate-here>#</a>
-</h2>
-<p>But data work also has its own unique patterns, and I want to talk about one of these that I think is important for all of us to carry around in our back pockets: the humble hash aggregate. The hash aggregate <a href=https://jakevdp.github.io/blog/2017/03/22/group-by-from-scratch/>works like this</a>:</p>
-<figure><img src=https://raw.githubusercontent.com/veekaybee/veekaybee.github.io/master/static/images/split-apply-combine.png width=600px>
-</figure>
-<p>You have a multidimensional array (or, as us plebes say, table) that contains numerous instances of similar labels. What you want to know is the distinct counts of each category. The implemented algorithm splits the matrix by key and sums the values and then returns the reduced matrix that has only unique keys and the sum values to the user.</p>
-<p>It&rsquo;s a very simple and ingenious algorithm, and it shows up over and over and over again. If you&rsquo;ve ever done a GROUP BY statement in SQL, you&rsquo;ve used the hash aggregate function. Python&rsquo;s dictionary operations utilize hash aggregates. And so does Pandas' split-apply-combine (pictured here from Jake&rsquo;s great post) And, so does Excel&rsquo;s <a href=https://en.wikipedia.org/wiki/Pivot_table>Pivot table function</a>. So does <code>sort filename | uniq -c | sort -nr</code> in Unix. So does the map/reduce pattern that started in Hadoop, <a href=https://www.xplenty.com/blog/apache-spark-vs-hadoop-mapreduce/>and has been implemented in-memory in Spark. </a> An <a href=https://en.wikipedia.org/wiki/Inverted_index>inverted index</a>, the foundation for Elasticsearch (and many search and retrieval platforms) is a hash aggregate.</p>
-<h2 id=so-what>
-So what?
-<a class=anchor href=#so-what>#</a>
-</h2>
-<p>If you&rsquo;ve worked with either development or data for any length of time, it&rsquo;s almost guaranteed that you&rsquo;ve come across the need to get unique categories of things and then count the things in those categories. In some cases, you might need to build your own implementation of GROUP BY because it doesn&rsquo;t work in your language or framework of choice.</p>
-<p>My personal opinion is that every data-centric framework that&rsquo;s been around long enough tends to SQL, so everything will <a href=https://docs.confluent.io/5.2.0/ksql/docs/developer-guide/aggregate-streaming-data.html>eventually implement hash aggregation.</a></p>
-<p>Once you understand that hash aggregation is a common pattern, it makes sense to observe it at work, learn more about how to optimize it, and generally think about it.</p>
-<p>Once we know that this pattern has a name and exists, we have a sense of power over our data work. Confuscius (or whoever attributed the quote to him) once said, “The beginning of wisdom is to call things by their proper name," and either he was once a curious toddler, or an MLE looking to better understand the history and context of his architecture.</p>
-</article>
+<article class=markdown><p>Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on <a href=https://spark.apache.org/docs/2.1.1/programming-guide.html#parallelized-collections>sc.parallelize</a>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> pyspark.sql.session <span style=color:#f92672>import</span> SparkSession
+rdd <span style=color:#f92672>=</span> sc<span style=color:#f92672>.</span>parallelize([(<span style=color:#ae81ff>0</span>,<span style=color:#66d9ef>None</span>), (<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>1</span>), (<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>2</span>), (<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>), (<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>10</span>), (<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>20</span>), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>)])
+df<span style=color:#f92672>=</span>rdd<span style=color:#f92672>.</span>toDF([<span style=color:#e6db74>&#39;id&#39;</span>,<span style=color:#e6db74>&#39;score&#39;</span>])
+df<span style=color:#f92672>.</span>show()
+</code></pre></div><pre tabindex=0><code>+---+-----+
+| id|score|
++---+-----+
+|  0| null|
+|  0|    1|
+|  0|    2|
+|  1|    2|
+|  1|   10|
+|  1|   20|
+|  3|   18|
+|  3|   18|
+|  3|   18|
++---+-----+
+</code></pre><pre tabindex=0><code>df.printSchema()
+root
+ |-- id: long (nullable = true)
+ |-- score: long (nullable = true)
+
+</code></pre><p>None is a special keyword in Python that will let you create nullable fields.
+If you want to simulate NaN fields, you can do <code>float('nan')</code> for the value.
+Note that if you don&rsquo;t specify each field as float, you get a null result for the values that are not typed.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> pyspark.sql.session <span style=color:#f92672>import</span> SparkSession
+<span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
+rdd <span style=color:#f92672>=</span> sc<span style=color:#f92672>.</span>parallelize([(<span style=color:#ae81ff>0</span>,np<span style=color:#f92672>.</span>nan), (<span style=color:#ae81ff>0</span>,float(<span style=color:#ae81ff>1</span>)), (<span style=color:#ae81ff>0</span>,float(<span style=color:#ae81ff>2</span>)), (<span style=color:#ae81ff>1</span>,float(<span style=color:#ae81ff>2</span>)), (<span style=color:#ae81ff>1</span>,float(<span style=color:#ae81ff>10</span>)), (<span style=color:#ae81ff>1</span>,float(<span style=color:#ae81ff>20</span>)), (<span style=color:#ae81ff>3</span>,float(<span style=color:#ae81ff>18</span>)), (<span style=color:#ae81ff>3</span>,float(<span style=color:#ae81ff>18</span>)), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>)])
+df<span style=color:#f92672>=</span>rdd<span style=color:#f92672>.</span>toDF([<span style=color:#e6db74>&#39;id&#39;</span>,<span style=color:#e6db74>&#39;score&#39;</span>])
+df<span style=color:#f92672>.</span>show()
+</code></pre></div><pre tabindex=0><code>+---+-----+
+| id|score|
++---+-----+
+|  0|  NaN|
+|  0|  1.0|
+|  0|  2.0|
+|  1|  2.0|
+|  1| 10.0|
+|  1| 20.0|
+|  3| 18.0|
+|  3| 18.0|
+|  3| null|
++---+-----+
+</code></pre></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/dee6518ac213ef9f8c5a7b9cb9c182d55ca94531 title="Last modified by Vicki | Dec 29, 2021" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Dec 29, 2021</span>
+<span>Dec 30, 2021</span>
 </a>
 </div>
 </div>
