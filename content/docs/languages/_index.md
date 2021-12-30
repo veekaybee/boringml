@@ -4,10 +4,5 @@ bookFlatSection: true
 title: "Languages"
 ---
 
-+++
-bookCollapseSection = true
-title =  "Languages"
-type =  docs
-+++
 
 ## HI

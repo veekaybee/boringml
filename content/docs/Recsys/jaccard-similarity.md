@@ -1,5 +1,8 @@
 # Jaccard Similarity
 
+
+Implemented two different ways: 
+
 ```python
 import numpy as numpy
 import typing
