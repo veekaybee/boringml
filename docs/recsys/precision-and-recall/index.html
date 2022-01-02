@@ -2,19 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="SQL #  People are always surprised when I say that I use PHP as a machine learning enginer. I&rsquo;d say on any given week, about 30-35% of my time is spent using PHP to serve recommendations in the front-end of the app, and if you work end-to-end with recommender systems, or any machine learning system that gets served as part of a web app, chances are you&rsquo;ll work heavily with the backend language serving it, too.">
+<meta name=description content="Precision and Recall
+Precision and recall are common ways to evaluate the accuracy of your machine learning or information retrieval model. In other contexts, such as statistics, the measurements around these terms is also known as Type I/Type II errors.
+Let’s say you’re working on understanding the relevancy of SnakeSearch, a search engine that looks to find relevant Python documentation for you. Let’s say you want to find documents related to Pandas, as you’re getting started with Pandas, the Python software library, and want some information.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content>
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="http://boringml.com/docs/languages/sql/">
-<title>SQL | Boring Machine Learning</title>
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Precision and Recall">
+<meta property="og:description" content="Precision and Recall
+Precision and recall are common ways to evaluate the accuracy of your machine learning or information retrieval model. In other contexts, such as statistics, the measurements around these terms is also known as Type I/Type II errors.
+Let’s say you’re working on understanding the relevancy of SnakeSearch, a search engine that looks to find relevant Python documentation for you. Let’s say you want to find documents related to Pandas, as you’re getting started with Pandas, the Python software library, and want some information.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://boringml.com/docs/recsys/precision-and-recall/"><meta property="article:section" content="docs">
+<meta property="article:modified_time" content="2022-01-02T09:31:51-05:00">
+<title>Precision and Recall | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
 <script defer src=/en.search.min.3d37579e6a93eb7cbfbb6c299408e0463c7d22f675767884a2e4fedff0773f64.js integrity="sha256-PTdXnmqT63y/u2wplAjgRjx9IvZ1dniEouT+3/B3P2Q=" crossorigin=anonymous></script>
-<link rel=alternate type=application/rss+xml href=http://boringml.com/docs/languages/sql/index.xml title="Boring Machine Learning">
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -62,9 +66,9 @@
 </ul>
 </li>
 <li>
-<input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle checked>
+<input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle>
 <label for=section-724b24b6e475c23be17bd4b512fe832d class="flex justify-between">
-<a href=http://boringml.com/docs/languages/sql/ class=active>SQL</a>
+<a href=http://boringml.com/docs/languages/sql/>SQL</a>
 </label>
 <ul>
 <li>
@@ -97,7 +101,7 @@
 </ul>
 </li>
 <li>
-<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle>
+<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle checked>
 <label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between">
 <a href=http://boringml.com/docs/recsys/>Recsys</a>
 </label>
@@ -109,7 +113,7 @@
 <a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a>
 </li>
 <li>
-<a href=http://boringml.com/docs/recsys/precision-and-recall/>Precision and Recall</a>
+<a href=http://boringml.com/docs/recsys/precision-and-recall/ class=active>Precision and Recall</a>
 </li>
 </ul>
 </li>
@@ -185,7 +189,7 @@
 <label for=menu-control>
 <img src=/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>SQL</strong>
+<strong>Precision and Recall</strong>
 <label for=toc-control>
 <img src=/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -194,17 +198,22 @@
 <nav id=TableOfContents></nav>
 </aside>
 </header>
-<article class=markdown><h1 id=sql>
-SQL
-<a class=anchor href=#sql>#</a>
-</h1>
-<p>People are always surprised when I say that I use PHP as a machine learning enginer. I&rsquo;d say on any given week, about 30-35% of my time is spent using PHP to serve recommendations in the front-end of the app, and if you work end-to-end with recommender systems, or any machine learning system that gets served as part of a web app, chances are you&rsquo;ll work heavily with the backend language serving it, too.</p>
+<article class=markdown><p>Precision and Recall</p>
+<p>Precision and recall are common ways to evaluate the accuracy of your machine learning or information retrieval model. In other contexts, such as statistics, the measurements around these terms is also known as Type I/Type II errors.</p>
+<p>Let’s say you’re working on understanding the relevancy of SnakeSearch, a search engine that looks to find relevant Python documentation for you. Let’s say you want to find documents related to Pandas, as you’re getting started with Pandas, the Python software library, and want some information. You type in “pandas” into SnakeSearch. How good is SnakeSearch’s result set for you?</p>
+<p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/imagessnakesearch.png alt></p>
+<p>You get back some set of results. </p>
+<p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/imagesresults.png alt></p>
+<p>Precision is the percent of returned results that are actually good. So we don’t want the results about real pandas, we want the software library. Precision is 3/6, or 1/2 because 3 of the results are relevant to us.</p>
+<p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/imagesprecision.png alt></p>
+<p>Recall is what percent of all the possible pandas results out there are returned to you. So let’s say for the case of this example that we have 8 total possible terms. If 3 of those are returned to us, the recall is 3/8.</p>
+<p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/imagesrecall.png alt></p>
 </article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/206012ec33bb2a6d48c60ca20ea031448e51b0a4 title="Last modified by Vicki Boykis | Jan 2, 2022" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Dec 30, 2021</span>
+<span>Jan 2, 2022</span>
 </a>
 </div>
 </div>
