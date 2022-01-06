@@ -1,5 +1,5 @@
 ---
-title: Build SBT and Build.Scala
+title: build.sbt and build.Scala
 weight: 2
 bookToc: false
 ---
@@ -41,3 +41,5 @@ The recommended approach is to define most settings in a multi-project build.sbt
 ```
 
 Here's [another great doc on sbt vs Scala files.](https://alvinalexander.com/scala/sbt-how-to-use-build.scala-instead-of-build.sbt/) 
+
+An important note is that this functionality is deprecated as of [sbt 0.13.12](https://github.com/sbt/sbt/pull/2530). Here's more about [how these two files work together](https://www.scala-sbt.org/0.13/docs/Full-Def.html)
