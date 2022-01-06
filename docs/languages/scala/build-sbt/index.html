@@ -2,21 +2,27 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="At me ipso nepotibus nunc celebratior genus #  Tanto oblite #  Lorem markdownum pectora novis patenti igne sua opus aurae feras materiaque illic demersit imago et aristas questaque posset. Vomit quoque suo inhaesuro clara. Esse cumque, per referri triste. Ut exponit solisque communis in tendens vincetis agisque iamque huic bene ante vetat omina Thebae rates. Aeacus servat admonitu concidit, ad resimas vultus et rugas vultu dignamque Siphnon.
-Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt dixit: ritu pharetramque.">
+<meta name=description content="Building Scala code #  SBT, along with Maven, is a default way to build Scala applications. build.sbt is the file that defines how your project is built, but sometimes you&rsquo;ll also see build.scala files in specific projects.
+build.scala is the more advanced version of the build.sbt file, and often is used for more complicated projects.
+Here&rsquo;s an example of the difference between .sbt and .scala build files:
+build.sbt
+name := &#34;hello&#34; version := &#34;1.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Scalding">
-<meta property="og:description" content="At me ipso nepotibus nunc celebratior genus #  Tanto oblite #  Lorem markdownum pectora novis patenti igne sua opus aurae feras materiaque illic demersit imago et aristas questaque posset. Vomit quoque suo inhaesuro clara. Esse cumque, per referri triste. Ut exponit solisque communis in tendens vincetis agisque iamque huic bene ante vetat omina Thebae rates. Aeacus servat admonitu concidit, ad resimas vultus et rugas vultu dignamque Siphnon.
-Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt dixit: ritu pharetramque.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Build SBT and Build.Scala">
+<meta property="og:description" content="Building Scala code #  SBT, along with Maven, is a default way to build Scala applications. build.sbt is the file that defines how your project is built, but sometimes you&rsquo;ll also see build.scala files in specific projects.
+build.scala is the more advanced version of the build.sbt file, and often is used for more complicated projects.
+Here&rsquo;s an example of the difference between .sbt and .scala build files:
+build.sbt
+name := &#34;hello&#34; version := &#34;1.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="http://boringml.com/docs/languages/scala/post1/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2021-12-30T09:44:09-05:00">
-<title>Scalding | Boring Machine Learning</title>
+<meta property="og:url" content="http://boringml.com/docs/languages/scala/build-sbt/"><meta property="article:section" content="docs">
+<meta property="article:modified_time" content="2022-01-06T09:45:09-05:00">
+<title>Build SBT and Build.Scala | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.3d37579e6a93eb7cbfbb6c299408e0463c7d22f675767884a2e4fedff0773f64.js integrity="sha256-PTdXnmqT63y/u2wplAjgRjx9IvZ1dniEouT+3/B3P2Q=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.22459c8e6371897ca8a1c09be06486be89c41511cae2e51d9e5104eb1b5efc65.js integrity="sha256-IkWcjmNxiXyoocCb4GSGvonEFRHK4uUdnlEE6xte/GU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -59,7 +65,7 @@ Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt d
 </label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/languages/scala/post1/ class=active>Scalding</a>
+<a href=http://boringml.com/docs/languages/scala/build-sbt/ class=active>Build SBT and Build.Scala</a>
 </li>
 </ul>
 </li>
@@ -70,7 +76,7 @@ Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt d
 </label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/languages/sql/arrays/>Legible SQL</a>
+<a href=http://boringml.com/docs/languages/sql/legible-sql/>Legible SQL</a>
 </li>
 </ul>
 </li>
@@ -134,7 +140,7 @@ Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt d
 </label>
 <ul>
 <li>
-<a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>AWS</a>
+<a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>Lambdas</a>
 </li>
 </ul>
 </li>
@@ -187,75 +193,41 @@ Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt d
 <label for=menu-control>
 <img src=/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Scalding</strong>
+<strong>Build SBT and Build.Scala</strong>
 <label for=toc-control>
 </label>
 </div>
 </header>
-<article class=markdown><h1 id=at-me-ipso-nepotibus-nunc-celebratior-genus>
-At me ipso nepotibus nunc celebratior genus
-<a class=anchor href=#at-me-ipso-nepotibus-nunc-celebratior-genus>#</a>
+<article class=markdown><h1 id=building-scala-code>
+Building Scala code
+<a class=anchor href=#building-scala-code>#</a>
 </h1>
-<h2 id=tanto-oblite>
-Tanto oblite
-<a class=anchor href=#tanto-oblite>#</a>
-</h2>
-<p>Lorem markdownum pectora novis patenti igne sua opus aurae feras materiaque
-illic demersit imago et aristas questaque posset. Vomit quoque suo inhaesuro
-clara. Esse cumque, per referri triste. Ut exponit solisque communis in tendens
-vincetis agisque iamque huic bene ante vetat omina Thebae rates. Aeacus servat
-admonitu concidit, ad resimas vultus et rugas vultu <strong>dignamque</strong> Siphnon.</p>
-<p>Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt
-dixit: ritu pharetramque. Exul Laurenti orantem modo, per densum missisque labor
-manibus non colla unum, obiectat. Tu pervia collo, fessus quae Cretenque Myconon
-crate! Tegumenque quae invisi sudore per vocari quaque plus ventis fluidos. Nodo
-perque, fugisse pectora sorores.</p>
-<h2 id=summe-promissa-supple-vadit-lenius>
-Summe promissa supple vadit lenius
-<a class=anchor href=#summe-promissa-supple-vadit-lenius>#</a>
-</h2>
-<p>Quibus largis latebris aethera versato est, ait sentiat faciemque. Aequata alis
-nec Caeneus exululat inclite corpus est, ire <strong>tibi</strong> ostendens et tibi. Rigent
-et vires dique possent lumina; <strong>eadem</strong> dixit poma funeribus paret et felix
-reddebant ventis utile lignum.</p>
-<ol>
-<li>Remansit notam Stygia feroxque</li>
-<li>Et dabit materna</li>
-<li>Vipereas Phrygiaeque umbram sollicito cruore conlucere suus</li>
-<li>Quarum Elis corniger</li>
-<li>Nec ieiunia dixit</li>
-</ol>
-<p>Vertitur mos ortu ramosam contudit dumque; placabat ac lumen. Coniunx Amoris
-spatium poenamque cavernis Thebae Pleiadasque ponunt, rapiare cum quae parum
-nimium rima.</p>
-<h2 id=quidem-resupinus-inducto-solebat-una-facinus-quae>
-Quidem resupinus inducto solebat una facinus quae
-<a class=anchor href=#quidem-resupinus-inducto-solebat-una-facinus-quae>#</a>
-</h2>
-<p>Credulitas iniqua praepetibus paruit prospexit, voce poena, sub rupit sinuatur,
-quin suum ventorumque arcadiae priori. Soporiferam erat formamque, fecit,
-invergens, nymphae mutat fessas ait finge.</p>
-<ol>
-<li>Baculum mandataque ne addere capiti violentior</li>
-<li>Altera duas quam hoc ille tenues inquit</li>
-<li>Sicula sidereus latrantis domoque ratae polluit comites</li>
-<li>Possit oro clausura namque se nunc iuvenisque</li>
-<li>Faciem posuit</li>
-<li>Quodque cum ponunt novercae nata vestrae aratra</li>
-</ol>
-<p>Ite extrema Phrygiis, patre dentibus, tonso perculit, enim blanda, manibus fide
-quos caput armis, posse! Nocendo fas Alcyonae lacertis structa ferarum manus
-fulmen dubius, saxa caelum effuge extremis fixum tumor adfecit <strong>bella</strong>,
-potentes? Dum nec insidiosa tempora tegit
-<a href=http://mihiferre.net/iuvenes-peto.html>spirarunt</a>. Per lupi pars foliis,
-porreximus humum negant sunt subposuere Sidone steterant auro. Memoraverit sine:
-ferrum idem Orion caelum heres gerebat fixis?</p>
+<p>SBT, along with Maven, is a default way to build Scala applications. <code>build.sbt</code> is the file that defines how your project is built, but sometimes you&rsquo;ll also see <code>build.scala</code> files in specific projects.</p>
+<p><code>build.scala</code> is the more advanced version of the <code>build.sbt</code> file, and often is used for more complicated projects.</p>
+<p><a href=https://stackoverflow.com/questions/18000103/what-is-the-difference-between-build-sbt-and-build-scala>Here&rsquo;s an example</a> of the difference between .sbt and .scala build files:</p>
+<p>build.sbt</p>
+<pre tabindex=0><code>name := &quot;hello&quot;
+
+version := &quot;1.0&quot;
+</code></pre><p>build.scala</p>
+<pre tabindex=0><code>import sbt._
+import Keys._
+
+object Build extends Build {
+  lazy val root = Project(id = &quot;root&quot;, base = file(&quot;.&quot;)).settings(
+    name := &quot;hello&quot;,
+    version := &quot;1.0&quot;      
+  )
+}
+</code></pre><p>From <a href=https://www.scala-sbt.org/1.x/docs/Organizing-Build.html#When+to+use++files>the official docs</a></p>
+<pre tabindex=0><code>The recommended approach is to define most settings in a multi-project build.sbt file, and using project/*.scala files for task implementations or to share values, such as keys. The use of .scala files also depends on how comfortable you or your team are with Scala.
+</code></pre><p>Here&rsquo;s <a href=https://alvinalexander.com/scala/sbt-how-to-use-build.scala-instead-of-build.sbt/>another great doc on sbt vs Scala files.</a></p>
 </article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/c47da529a1b8abafdb165b1d870b307a55ecce6c title="Last modified by Vicki Boykis | Jan 6, 2022" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Dec 30, 2021</span>
+<span>Jan 6, 2022</span>
 </a>
 </div>
 </div>
