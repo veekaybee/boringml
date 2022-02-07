@@ -54,10 +54,10 @@ final class YourTestpec extends FunSuite with BeforeAndAfterEach with BeforeAndA
 
 test("simple dataframe assert") {
 
-	val df = spark.createDataFrame(Seq((1,"a string","another string",12344567L).toDF("first val","stringval","stringval2","longnum")
+	val df = spark.createDataFrame(Seq((1,"a string","another string",12344567L)
+    .toDF("first val","stringval","stringval2","longnum")
 
     assert(df.count == 1)
-
  }
 ```
 
@@ -91,16 +91,14 @@ final class YourTestpec extends FunSuite with DataFrameSuiteBase  with SharedSpa
 
 
 test("simple dataframe assert") {
-
+    
 	val df = spark.createDataFrame(Seq((1,"a string","another string",12344567L)
     .toDF("first val","stringval","stringval2","longnum")
 
     val df2 = spark.createDataFrame(Seq((1,"a string","another string",12344567L)
     .toDF("first val","stringval","stringval2","longnum")
 
-
     assertDataFrameEquals(df, df2) 
-
  }
 ```
 
