@@ -15,7 +15,7 @@ title: Recsys Syllabus
 -  Hybrid Recommenders: [Collaborative + Content Based](https://aclanthology.org/W03-1103.pdf)
  
 **Methods**  
-- Personalization](https://eugeneyan.com/writing/patterns-for-personalization) 
+- [Personalization](https://eugeneyan.com/writing/patterns-for-personalization) 
     - [Multiarmed Bandits](https://www.youtube.com/watch?v=rDjCfQJ_sYY&t=17s)
     - Embeddings [Overview](https://abhadury.com/articles/2020-03/embeddings-for-recommender-systems) and [Overview](https://drop.engineering/building-a-recommender-system-using-embeddings-de5a30e655aa)
     - Random Walk - [Pixie](https://cs.stanford.edu/people/jure/pubs/pixie-www18.pdf)
