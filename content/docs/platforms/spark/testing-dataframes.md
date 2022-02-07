@@ -1,8 +1,8 @@
-+++
+---
 title = "Writing Unit Tests for Spark Apps in Scala"
 type = "docs"
 bookToC = false
-+++
+---
 
 Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
 
@@ -91,7 +91,7 @@ final class YourTestpec extends FunSuite with DataFrameSuiteBase  with SharedSpa
 
 
 test("simple dataframe assert") {
-    
+
 	val df = spark.createDataFrame(Seq((1,"a string","another string",12344567L)
     .toDF("first val","stringval","stringval2","longnum")
 
