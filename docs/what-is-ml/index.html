@@ -16,7 +16,7 @@ She closed her laptop, put on her backpack and hiking boots, and walked quietly 
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.694ec1a0398f91c8d9e0c95c5fa64ba5ef2d04d013fcc0583daaadffe85aad0f.js integrity="sha256-aU7BoDmPkcjZ4MlcX6ZLpe8tBNAT/MBYPaqt/+harQ8=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.6786c1b166200d82564d7701e8a0117cfd28014e50602ac806c6764cd9fc5f8f.js integrity="sha256-Z4bBsWYgDYJWTXcB6KARfP0oAU5QYCrIBsZ2TNn8X48=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -228,7 +228,7 @@ What is machine learning engineering?
 <p>“When the data didn’t hit the next day, I looked at the code responsible for populating those tables,I could check the cron scheduler for the Sqoop job. The cron scheduler for the Sqoop job had somehow become broken (we’re only in the middle of our Airflow migration), and I had to patch it. After a couple hours, we started getting data again and I was able to finally get that response field. Now, I could do some feature engineering to pull the rest of the variables. “</p>
 <p>“The only problem was that, while the billing data was in our legacy HDFS, the newer, clickstream app data, was being streamed via Kinesis into S3, and then into Athena. The other issue with the clickstream data was that it had a ton of non-standard JSON fields that I had to extract specifically to get the events I needed to understand how many times the customer had hovered over the subscribe button and clicked through, and create sessions for user data. I used jq to check those fields and then wrote them up in our metadata dictionary.”</p>
 <p>“Once I had that data available to me, I needed a place that our security team allowed so that I could combine the two data sources. They suggested using Spark on AWS to write out to S3, which they’d then send back to HDFS. Our Spark workloads run on K8s on AWS Spot Instances, but some of the pods were hanging, so I used kubectl to take a look at them and figure out what the issue was.”</p>
-<blockquote class=twitter-tweet><p lang=en dir=ltr>Just realized you can make fake magazines with Canva. <a href=https://t.co/Yu0HO8NYmL>pic.twitter.com/Yu0HO8NYmL</a></p>&mdash; Vicki (*args,**kwargs) (@vboykis) <a href="https://twitter.com/vboykis/status/1438900066949939206?ref_src=twsrc%5Etfw">September 17, 2021</a></blockquote>
+<blockquote class=twitter-tweet><p lang=en dir=ltr>Just realized you can make fake magazines with Canva. <a href=https://t.co/Yu0HO8NYmL>pic.twitter.com/Yu0HO8NYmL</a></p>&mdash; Vicki (implicit) (@vboykis) <a href="https://twitter.com/vboykis/status/1438900066949939206?ref_src=twsrc%5Etfw">September 17, 2021</a></blockquote>
 <script async src=https://platform.twitter.com/widgets.js></script>
 <p>“Now, I had all of the data in a single place, and it was time to build my XGBoost model and iterate on it . But the Python available to me on the machine that could access the HDFS server didn’t have all the dependencies I needed to run XGBoost, so I-”</p>
 <p>The Staff Engineer held up a palm as if to stop the torrent of pain that flowed from the machine learning engineer. “I’ve heard enough,” he said, sighing.</p>
