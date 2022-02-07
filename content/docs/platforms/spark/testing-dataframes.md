@@ -4,6 +4,8 @@ type = "docs"
 bookToC = false
 ---
 
+# Writing Unit Tests for Spark Apps in Scala
+
 Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
 
 This is not different from traditional unit testing, with the only exception that you'd like to test and introspect not only the functionality of the code [but the data itself.](https://www.youtube.com/watch?v=yACtdj1_IxE) 
