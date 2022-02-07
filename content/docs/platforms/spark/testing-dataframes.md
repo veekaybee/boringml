@@ -92,9 +92,11 @@ final class YourTestpec extends FunSuite with DataFrameSuiteBase  with SharedSpa
 
 test("simple dataframe assert") {
 
-	val df = spark.createDataFrame(Seq((1,"a string","another string",12344567L).toDF("first val","stringval","stringval2","longnum")
+	val df = spark.createDataFrame(Seq((1,"a string","another string",12344567L)
+    .toDF("first val","stringval","stringval2","longnum")
 
-    val df2 = spark.createDataFrame(Seq((1,"a string","another string",12344567L).toDF("first val","stringval","stringval2","longnum")
+    val df2 = spark.createDataFrame(Seq((1,"a string","another string",12344567L)
+    .toDF("first val","stringval","stringval2","longnum")
 
 
     assertDataFrameEquals(df, df2) 
@@ -144,32 +146,32 @@ val expected: DataFrame = spark.createDataFrame(Seq(
         "my_map")
  
 // Create our test data
-    val expectedArr = test.collect()
-    val testArr = expected.collect()
+val expectedArr = test.collect()
+val testArr = expected.collect()
  
 // zip into a collection that compares across tuples of elements
-    (expectedArr zip testArr).foreach{
-      case (a,b) => assert(dsEqual(a,b))
-    }
- 
+(expectedArr zip testArr).foreach{
+    case (a,b) => assert(dsEqual(a,b))
   }
+
+}
  
  
-  def dsEqual(a:MyCaseClassRecord, b:MyCaseClassRecord): Boolean ={
-    a.user_id == b.user_id &&
-      sameArray(a.my_array, b.my_array) &&
-      sameMap(a.my_map,b.my_map)
-  }
+def dsEqual(a:MyCaseClassRecord, b:MyCaseClassRecord): Boolean ={
+a.user_id == b.user_id &&
+    sameArray(a.my_array, b.my_array) &&
+    sameMap(a.my_map,b.my_map)
+}
  
 // compare Arrays with nesting
-  def sameArray(a:Array[String], b:Array[String]) : Boolean ={
-    a == b || a.sameElements(b)
-  }
+def sameArray(a:Array[String], b:Array[String]) : Boolean ={
+a == b || a.sameElements(b)
+}
  
 // compare Maps with nesting
-  def sameMap(a:Map[String,Int], b:Map[String,Int]) : Boolean ={
-    a == b || a.sameElements(b)
-  }
+def sameMap(a:Map[String,Int], b:Map[String,Int]) : Boolean ={
+a == b || a.sameElements(b)
+}
 
 ```
 
