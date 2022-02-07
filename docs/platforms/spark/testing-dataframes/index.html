@@ -12,13 +12,13 @@ This is not different from traditional unit testing, with the only exception tha
 There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://boringml.com/docs/platforms/spark/testing-dataframes/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2022-02-07T13:33:23-05:00">
+<meta property="article:modified_time" content="2022-02-07T13:46:43-05:00">
 <title>Writing Unit Tests for Spark Apps in Scala | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.0f0b24a149d75573d8d7fece61a4c36b556df41af8ff821888990777c54c3317.js integrity="sha256-DwskoUnXVXPY1/7OYaTDa1Vt9Br4/4IYiJkHd8VMMxc=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.efbfaf34ef4748271804e79cc98ab8a3bd2c80009ac87fd763c9185222ea19d8.js integrity="sha256-77+vNO9HSCcYBOecyYq4o70sgACayH/XY8kYUiLqGdg=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -158,9 +158,6 @@ There’s two ways to be defensive about creating correct data inputs and output
 <a href=http://boringml.com/docs/platforms/spark/create-data-python/>Sample data in PySpark</a>
 </li>
 <li>
-<a href=http://boringml.com/docs/platforms/spark/writing-files/>Writing Spark files to disk</a>
-</li>
-<li>
 <a href=http://boringml.com/docs/platforms/spark/testing-dataframes/ class=active>Writing Unit Tests for Spark Apps in Scala</a>
 </li>
 </ul>
@@ -200,8 +197,17 @@ There’s two ways to be defensive about creating correct data inputs and output
 </label>
 <strong>Writing Unit Tests for Spark Apps in Scala</strong>
 <label for=toc-control>
+<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
 </div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#scala-unit-tests>Scala Unit Tests</a></li>
+<li><a href=#heard-you-like-arrays-of-arrays>Heard you like Arrays of Arrays</a></li>
+</ul>
+</nav>
+</aside>
 </header>
 <article class=markdown><p>Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.</p>
 <p>This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code <a href="https://www.youtube.com/watch?v=yACtdj1_IxE">but the data itself.</a></p>
@@ -278,7 +284,7 @@ test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple data
 
 
 test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple dataframe assert&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-    
+
 	<span style=color:#66d9ef>val</span> df <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>)</span>
     <span style=color:#f92672>.</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
 
@@ -365,7 +371,7 @@ a <span style=color:#f92672>==</span> b <span style=color:#f92672>||</span> a<sp
 </code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/4d8c36af5b8da1ddf70e86fbc99a3b51bed096d6 title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/80a1b9484da976e8cee2c5d01225ae782ad003ee title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>Feb 7, 2022</span>
 </a>
@@ -377,6 +383,16 @@ a <span style=color:#f92672>==</span> b <span style=color:#f92672>||</span> a<sp
 </div>
 <label for=menu-control class="hidden book-menu-overlay"></label>
 </div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#scala-unit-tests>Scala Unit Tests</a></li>
+<li><a href=#heard-you-like-arrays-of-arrays>Heard you like Arrays of Arrays</a></li>
+</ul>
+</nav>
+</div>
+</aside>
 </main>
 </body>
 </html>
