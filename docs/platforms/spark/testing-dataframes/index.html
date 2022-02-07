@@ -12,13 +12,13 @@ This is not different from traditional unit testing, with the only exception tha
 There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://boringml.com/docs/platforms/spark/testing-dataframes/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2022-02-07T13:26:20-05:00">
+<meta property="article:modified_time" content="2022-02-07T13:33:23-05:00">
 <title>Writing Unit Tests for Spark Apps in Scala | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.82580a4ddafde39c64056f8d52d5e4d9387dd9850909eb461105a665ff471a51.js integrity="sha256-glgKTdr945xkBW+NUtXk2Th92YUJCetGEQWmZf9HGlE=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.0f0b24a149d75573d8d7fece61a4c36b556df41af8ff821888990777c54c3317.js integrity="sha256-DwskoUnXVXPY1/7OYaTDa1Vt9Br4/4IYiJkHd8VMMxc=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -246,10 +246,10 @@ Scala Unit Tests
 
 test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple dataframe assert&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
 
-	<span style=color:#66d9ef>val</span> df <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>).</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>val</span> df <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>)</span>
+    <span style=color:#f92672>.</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
 
     assert<span style=color:#f92672>(</span>df<span style=color:#f92672>.</span>count <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>)</span>
-
  <span style=color:#f92672>}</span>
 </code></pre></div><p>Note that here I&rsquo;m setting up a Spark session and context beforehand so that when I run <code>sbt test</code>, I&rsquo;m actually running it locally on my machine against the version of Spark that comes bundled with my project. This makes testing quicker than having to ship your project to wherever it runs against your data remotely.</p>
 <p>Another fantastic alternative is using the <a href=https://github.com/holdenk/spark-testing-base>Spark Test Base</a>, which has methods for both DataFrames and Datasets and even sets up a SparkContext for you:</p>
@@ -278,16 +278,14 @@ test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple data
 
 
 test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple dataframe assert&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-
+    
 	<span style=color:#66d9ef>val</span> df <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>)</span>
     <span style=color:#f92672>.</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
 
     <span style=color:#66d9ef>val</span> df2 <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>)</span>
     <span style=color:#f92672>.</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
 
-
     assertDataFrameEquals<span style=color:#f92672>(</span>df<span style=color:#f92672>,</span> df2<span style=color:#f92672>)</span> 
-
  <span style=color:#f92672>}</span>
 </code></pre></div><p>Both Spark Test Base and Fast Tests work well for most of what you&rsquo;d like to test in Spark, such as checking column equality, schemas, totals, and values, and asserting DataFrame equality, which is what I was looking for.</p>
 <h2 id=heard-you-like-arrays-of-arrays>
@@ -367,7 +365,7 @@ a <span style=color:#f92672>==</span> b <span style=color:#f92672>||</span> a<sp
 </code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/12807bda83d569d951c404eb625a9dcabd0a8b4f title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/4d8c36af5b8da1ddf70e86fbc99a3b51bed096d6 title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>Feb 7, 2022</span>
 </a>
