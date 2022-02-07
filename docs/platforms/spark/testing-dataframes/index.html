@@ -2,23 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
-This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code but the data itself.
-There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark.">
+<meta name=description content="Writing Unit Tests for Spark Apps in Scala #  Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
+This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code but the data itself.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Writing Unit Tests for Spark Apps in Scala">
-<meta property="og:description" content="Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
-This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code but the data itself.
-There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark.">
+<meta property="og:description" content="Writing Unit Tests for Spark Apps in Scala #  Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
+This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code but the data itself.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://boringml.com/docs/platforms/spark/testing-dataframes/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2022-02-07T13:46:43-05:00">
+<meta property="article:modified_time" content="2022-02-07T13:49:07-05:00">
 <title>Writing Unit Tests for Spark Apps in Scala | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.efbfaf34ef4748271804e79cc98ab8a3bd2c80009ac87fd763c9185222ea19d8.js integrity="sha256-77+vNO9HSCcYBOecyYq4o70sgACayH/XY8kYUiLqGdg=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.0b61c3354dfc764d78287726ab6cd5118b7d9ce9f303c71041f264e60471f7ab.js integrity="sha256-C2HDNU38dk14KHcmq2zVEYt9nOnzA8cQQfJk5gRx96s=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -209,7 +207,11 @@ There’s two ways to be defensive about creating correct data inputs and output
 </nav>
 </aside>
 </header>
-<article class=markdown><p>Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.</p>
+<article class=markdown><h1 id=writing-unit-tests-for-spark-apps-in-scala>
+Writing Unit Tests for Spark Apps in Scala
+<a class=anchor href=#writing-unit-tests-for-spark-apps-in-scala>#</a>
+</h1>
+<p>Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.</p>
 <p>This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code <a href="https://www.youtube.com/watch?v=yACtdj1_IxE">but the data itself.</a></p>
 <p>There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark. The first by writing and reading from Datasets, which are strongly-typed collections of objects. This works well if you know exactly the data structures you’d like to write.</p>
 <p>If you’re more in experimental mode, another way to check your data is to write unit tests against Spark code that you can run both locally and as part of CI/CD when you merge your Spark jobs into prod.</p>
@@ -371,7 +373,7 @@ a <span style=color:#f92672>==</span> b <span style=color:#f92672>||</span> a<sp
 </code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/80a1b9484da976e8cee2c5d01225ae782ad003ee title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/c993b73877af2a815b818b2b02a6edb4f4629e6e title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>Feb 7, 2022</span>
 </a>
