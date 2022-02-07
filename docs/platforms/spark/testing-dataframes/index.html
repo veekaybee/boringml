@@ -2,19 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content>
+<meta name=description content="Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
+This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code but the data itself.
+There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content>
-<meta property="og:description" content>
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Writing Unit Tests for Spark Apps in Scala">
+<meta property="og:description" content="Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.
+This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code but the data itself.
+There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://boringml.com/docs/platforms/spark/testing-dataframes/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2022-02-07T12:56:52-05:00">
-<title>Testing Dataframes | Boring Machine Learning</title>
+<meta property="article:modified_time" content="2022-02-07T13:01:02-05:00">
+<title>Writing Unit Tests for Spark Apps in Scala | Boring Machine Learning</title>
 <link rel=manifest href=/manifest.json>
 <link rel=icon href=/favicon.png type=image/x-icon>
 <link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
 <script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.6786c1b166200d82564d7701e8a0117cfd28014e50602ac806c6764cd9fc5f8f.js integrity="sha256-Z4bBsWYgDYJWTXcB6KARfP0oAU5QYCrIBsZ2TNn8X48=" crossorigin=anonymous></script>
+<script defer src=/en.search.min.dfb25b61c964852df8d8c5ea832f821b6b307dab6ade2f54d52f25465c990184.js integrity="sha256-37JbYclkhS342MXqgy+CG2swfatq3i9U1S8lRlyZAYQ=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -156,6 +160,9 @@
 <li>
 <a href=http://boringml.com/docs/platforms/spark/writing-files/>Writing Spark files to disk</a>
 </li>
+<li>
+<a href=http://boringml.com/docs/platforms/spark/testing-dataframes/ class=active>Writing Unit Tests for Spark Apps in Scala</a>
+</li>
 </ul>
 </li>
 <li>
@@ -191,19 +198,174 @@
 <label for=menu-control>
 <img src=/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Testing Dataframes</strong>
+<strong>Writing Unit Tests for Spark Apps in Scala</strong>
 <label for=toc-control>
-<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
 </div>
-<aside class="hidden clearfix">
-<nav id=TableOfContents></nav>
-</aside>
 </header>
-<article class=markdown></article>
+<article class=markdown><p>Often, something you’d like to test when you’re writing self-contained Spark applications, is whether your given work on a DataFrame or Dataset will return what you want it to after multiple joins and manipulations to the input data.</p>
+<p>This is not different from traditional unit testing, with the only exception that you&rsquo;d like to test and introspect not only the functionality of the code <a href="https://www.youtube.com/watch?v=yACtdj1_IxE">but the data itself.</a></p>
+<p>There’s two ways to be defensive about creating correct data inputs and outputs in Scala Spark. The first by writing and reading from Datasets, which are strongly-typed collections of objects. This works well if you know exactly the data structures you’d like to write.</p>
+<p>If you’re more in experimental mode, another way to check your data is to write unit tests against Spark code that you can run both locally and as part of CI/CD when you merge your Spark jobs into prod.</p>
+<h2 id=scala-unit-tests>
+Scala Unit Tests
+<a class=anchor href=#scala-unit-tests>#</a>
+</h2>
+<p>First, a word about unit tests. In Scala, with the Scalatest suite, you can use either traditional <a href=https://www.scalatest.org/user_guide/selecting_a_style>TDD unit tests with FunSuite</a>, or FlatSpec, which is <a href=https://www.scalatest.org/scaladoc/3.2.10/org/scalatest/flatspec/AnyFlatSpec.html>more behavior-driven</a>. Flatspec gives you acess to matchers, which are a scala-based DSL of <a href=https://www.scalatest.org/user_guide/using_matchers>custom assertions.</a>. Scalatest leans towards FlatSpec as the default testing capability in any given Scala project, but you can use either style.</p>
+<p>I&rsquo;ve seen a mix of different styles for Spark, but most of them follow FunSuite, including <a href=https://github.com/holdenk/spark-testing-base>Spark Test Base</a>, <a href=https://github.com/MrPowers/spark-fast-tests/tree/20b1b5f4574a63c8c8007b0f77a94b11e7156b08>Spark Fast Tests</a>, and this <a href=https://github.com/tmalaska/SparkUnitTestingExamples>Spark unit testing example library</a> from a previous <a href="https://www.youtube.com/watch?v=4U9Me6shpno">Spark Summit.</a></p>
+<p>I&rsquo;ve also chosen to follow FunSuite for this example because I&rsquo;m more familiar with traditional unit testing, and because you can implement much of the functionality, including FlatSpec&rsquo;s matchers, in FunSuite directly.</p>
+<p>Here&rsquo;s an example of a simple test you can set up against a DataFrame:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala><span style=color:#66d9ef>import</span> org.apache.spark.sql.catalyst.expressions.AttributeSet.empty.intersect
+<span style=color:#66d9ef>import</span> org.apache.spark.sql.<span style=color:#f92672>{</span><span style=color:#a6e22e>DataFrame</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>Dataset</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>Encoders</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>Row</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SQLContext</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SQLImplicits</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SparkSession</span><span style=color:#f92672>}</span>
+<span style=color:#66d9ef>import</span> org.apache.spark.<span style=color:#f92672>{</span><span style=color:#a6e22e>SparkConf</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SparkContext</span><span style=color:#f92672>}</span>
+<span style=color:#66d9ef>import</span> org.scalatest.<span style=color:#f92672>{</span><span style=color:#a6e22e>BeforeAndAfterAll</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>BeforeAndAfterEach</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>FunSuite</span><span style=color:#f92672>}</span>
+
+<span style=color:#66d9ef>final</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>YourTestpec</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>FunSuite</span> <span style=color:#66d9ef>with</span> <span style=color:#a6e22e>BeforeAndAfterEach</span> <span style=color:#66d9ef>with</span> <span style=color:#a6e22e>BeforeAndAfterAll</span>  <span style=color:#f92672>{</span>self <span style=color:#66d9ef>=&gt;</span>
+  <span style=color:#a6e22e>@transient</span> <span style=color:#66d9ef>var</span> ss<span style=color:#66d9ef>:</span> <span style=color:#66d9ef>SparkSession</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span>
+  <span style=color:#a6e22e>@transient</span> <span style=color:#66d9ef>var</span> sc<span style=color:#66d9ef>:</span> <span style=color:#66d9ef>SparkContext</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span>
+
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>object</span> <span style=color:#a6e22e>testImplicits</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>SQLImplicits</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>_sqlContext</span><span style=color:#66d9ef>:</span> <span style=color:#66d9ef>SQLContext</span> <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>ss<span style=color:#f92672>.</span>sqlContext
+  <span style=color:#f92672>}</span>
+  <span style=color:#66d9ef>import</span> testImplicits._
+
+  <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>def</span> beforeAll<span style=color:#f92672>()</span><span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Unit</span> <span style=color:#f92672>=</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>val</span> sparkConfig <span style=color:#66d9ef>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>SparkConf</span><span style=color:#f92672>()</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.broadcast.compress&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>)</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.shuffle.compress&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>)</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.shuffle.spill.compress&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>)</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.master&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;local&#34;</span><span style=color:#f92672>)</span>
+
+    ss <span style=color:#66d9ef>=</span> <span style=color:#a6e22e>SparkSession</span><span style=color:#f92672>.</span>builder<span style=color:#f92672>().</span>config<span style=color:#f92672>(</span>sparkConfig<span style=color:#f92672>).</span>getOrCreate<span style=color:#f92672>()</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>def</span> afterAll<span style=color:#f92672>()</span><span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Unit</span> <span style=color:#f92672>=</span> <span style=color:#f92672>{</span>
+    ss<span style=color:#f92672>.</span>stop<span style=color:#f92672>()</span>
+  <span style=color:#f92672>}</span>
+
+
+test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple dataframe assert&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>val</span> df <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>).</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
+
+    assert<span style=color:#f92672>(</span>df<span style=color:#f92672>.</span>count <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>)</span>
+
+ <span style=color:#f92672>}</span>
+</code></pre></div><p>Note that here I&rsquo;m setting up a Spark session and context beforehand so that when I run <code>sbt test</code>, I&rsquo;m actually running it locally on my machine against the version of Spark that comes bundled with my project. This makes testing quicker than having to ship your project to wherever it runs against your data remotely.</p>
+<p>Another fantastic alternative is using the <a href=https://github.com/holdenk/spark-testing-base>Spark Test Base</a>, which has methods for both DataFrames and Datasets and even sets up a SparkContext for you:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala><span style=color:#66d9ef>import</span> org.apache.spark.sql.catalyst.expressions.AttributeSet.empty.intersect
+<span style=color:#66d9ef>import</span> org.apache.spark.sql.<span style=color:#f92672>{</span><span style=color:#a6e22e>DataFrame</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>Dataset</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>Encoders</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>Row</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SQLContext</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SQLImplicits</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SparkSession</span><span style=color:#f92672>}</span>
+<span style=color:#66d9ef>import</span> org.apache.spark.<span style=color:#f92672>{</span><span style=color:#a6e22e>SparkConf</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SparkContext</span><span style=color:#f92672>}</span>
+<span style=color:#66d9ef>import</span> org.scalatest.<span style=color:#f92672>{</span><span style=color:#a6e22e>BeforeAndAfterAll</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>BeforeAndAfterEach</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>FunSuite</span><span style=color:#f92672>}</span>
+<span style=color:#66d9ef>import</span> com.holdenkarau.spark.testing.<span style=color:#f92672>{</span><span style=color:#a6e22e>DatasetGeneratorRDDGenerator</span><span style=color:#f92672>,</span> <span style=color:#a6e22e>SharedSparkContext</span>
+<span style=color:#f92672>}</span>
+
+<span style=color:#66d9ef>final</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>YourTestpec</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>FunSuite</span> <span style=color:#66d9ef>with</span> <span style=color:#a6e22e>DataFrameSuiteBase</span>  <span style=color:#66d9ef>with</span> <span style=color:#a6e22e>SharedSparkContext</span> <span style=color:#66d9ef>with</span> <span style=color:#a6e22e>DatasetGenerator</span><span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>def</span> beforeAll<span style=color:#f92672>()</span><span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Unit</span> <span style=color:#f92672>=</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>val</span> sparkConfig <span style=color:#66d9ef>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>SparkConf</span><span style=color:#f92672>()</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.broadcast.compress&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>)</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.shuffle.compress&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>)</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.shuffle.spill.compress&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>)</span>
+    sparkConfig<span style=color:#f92672>.</span>set<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;spark.master&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;local&#34;</span><span style=color:#f92672>)</span>
+
+    ss <span style=color:#66d9ef>=</span> <span style=color:#a6e22e>SparkSession</span><span style=color:#f92672>.</span>builder<span style=color:#f92672>().</span>config<span style=color:#f92672>(</span>sparkConfig<span style=color:#f92672>).</span>getOrCreate<span style=color:#f92672>()</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>def</span> afterAll<span style=color:#f92672>()</span><span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Unit</span> <span style=color:#f92672>=</span> <span style=color:#f92672>{</span>
+    ss<span style=color:#f92672>.</span>stop<span style=color:#f92672>()</span>
+  <span style=color:#f92672>}</span>
+
+
+test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;simple dataframe assert&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>val</span> df <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>).</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
+
+    <span style=color:#66d9ef>val</span> df2 <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>((</span><span style=color:#ae81ff>1</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;a string&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;another string&#34;</span><span style=color:#f92672>,</span><span style=color:#ae81ff>12344567L</span><span style=color:#f92672>).</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;first val&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;stringval2&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;longnum&#34;</span><span style=color:#f92672>)</span>
+
+
+    assertDataFrameEquals<span style=color:#f92672>(</span>df<span style=color:#f92672>,</span> df2<span style=color:#f92672>)</span> 
+
+ <span style=color:#f92672>}</span>
+</code></pre></div><p>Both Spark Test Base and Fast Tests work well for most of what you&rsquo;d like to test in Spark, such as checking column equality, schemas, totals, and values, and asserting DataFrame equality, which is what I was looking for.</p>
+<h2 id=heard-you-like-arrays-of-arrays>
+Heard you like Arrays of Arrays
+<a class=anchor href=#heard-you-like-arrays-of-arrays>#</a>
+</h2>
+<p>Sometimes, however, you need to test more complex data structures. For example, often for machine learning, particularly for text processing, you need to create nesting where you might have a DataFrame or Dataset, where the output looks something like:</p>
+<table>
+<thead>
+<tr>
+<th>user</th>
+<th>text_feature_1</th>
+<th>text_feature_2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>123456789</td>
+<td>Array(&ldquo;text&rdquo;,&ldquo;text&rdquo;,&ldquo;text&rdquo;)</td>
+<td>Map(&ldquo;val&rdquo;->2, &ldquo;val2&rdquo;->3)</td>
+</tr>
+<tr>
+<td>21234234</td>
+<td>Array(&ldquo;text1&rdquo;,&ldquo;text1&rdquo;,&ldquo;text2&rdquo;)</td>
+<td>Map(&ldquo;val&rdquo;->4, &ldquo;val2&rdquo;->5)</td>
+</tr>
+</tbody>
+</table>
+<p>How do you test for equality between what you expect and what you output here if you&rsquo;re looking to test the entire method generating this DataFrame?</p>
+<p>The main problem here is in the way Scala does object comparison. Scala by default, in its object comparison methods such as <code>equals</code>, <code>sameElements</code>, and even <code>deep</code>, checks for referential equality, whether these objects are exactly the same object. deepEquals only works on <a href=https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#deepEquals-java.lang.Object:A-java.lang.Object:A->arrays</a>.</p>
+<p>That means that if your columns are creating complex objects like Maps, they&rsquo;ll never be equal, since, when you create two DataFrames, even if they&rsquo;re equivalent, they&rsquo;re made up of Row objects, which are made up of Maps and Arrays that are each unique new instantiated objects.</p>
+<p>In this case, you need a way of traversing the data structure.</p>
+<p>Here&rsquo;s what I came up with for my test:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala>test<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;test my join&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+ 
+    <span style=color:#75715e>// Create our test data
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>val</span> test <span style=color:#66d9ef>=</span> spark<span style=color:#f92672>.</span><span style=color:#a6e22e>DataFrame</span> <span style=color:#66d9ef>=</span> ss<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>(</span>
+      <span style=color:#f92672>(</span><span style=color:#ae81ff>12345678901L</span><span style=color:#f92672>,</span><span style=color:#a6e22e>Array</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>),</span><span style=color:#a6e22e>Map</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>-&gt;</span><span style=color:#ae81ff>1</span> <span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>-&gt;</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;text&#34;</span> <span style=color:#f92672>-&gt;</span><span style=color:#ae81ff>2</span><span style=color:#f92672>)))</span>
+      <span style=color:#f92672>.</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;user_id&#34;</span><span style=color:#f92672>,</span>
+        <span style=color:#e6db74>&#34;my_array&#34;</span><span style=color:#f92672>,</span>
+        <span style=color:#e6db74>&#34;my_map&#34;</span><span style=color:#f92672>)</span>
+ 
+<span style=color:#66d9ef>val</span> expected<span style=color:#66d9ef>:</span> <span style=color:#66d9ef>DataFrame</span> <span style=color:#f92672>=</span> spark<span style=color:#f92672>.</span>createDataFrame<span style=color:#f92672>(</span><span style=color:#a6e22e>Seq</span><span style=color:#f92672>(</span>
+      <span style=color:#f92672>(</span><span style=color:#ae81ff>12345678901L</span><span style=color:#f92672>,</span><span style=color:#a6e22e>Array</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;tag&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;tag&#34;</span><span style=color:#f92672>,</span><span style=color:#e6db74>&#34;tag&#34;</span><span style=color:#f92672>),</span><span style=color:#a6e22e>Map</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;tag&#34;</span><span style=color:#f92672>-&gt;</span><span style=color:#ae81ff>1</span> <span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;tag&#34;</span><span style=color:#f92672>-&gt;</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;tag&#34;</span> <span style=color:#f92672>-&gt;</span><span style=color:#ae81ff>2</span><span style=color:#f92672>)))</span>
+      <span style=color:#f92672>.</span>toDF<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;user_id&#34;</span><span style=color:#f92672>,</span>
+        <span style=color:#e6db74>&#34;my_array&#34;</span><span style=color:#f92672>,</span>
+        <span style=color:#e6db74>&#34;my_map&#34;</span><span style=color:#f92672>)</span>
+ 
+<span style=color:#75715e>// Create our test data
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>val</span> expectedArr <span style=color:#66d9ef>=</span> test<span style=color:#f92672>.</span>collect<span style=color:#f92672>()</span>
+    <span style=color:#66d9ef>val</span> testArr <span style=color:#66d9ef>=</span> expected<span style=color:#f92672>.</span>collect<span style=color:#f92672>()</span>
+ 
+<span style=color:#75715e>// zip into a collection that compares across tuples of elements
+</span><span style=color:#75715e></span>    <span style=color:#f92672>(</span>expectedArr zip testArr<span style=color:#f92672>).</span>foreach<span style=color:#f92672>{</span>
+      <span style=color:#66d9ef>case</span> <span style=color:#f92672>(</span>a<span style=color:#f92672>,</span>b<span style=color:#f92672>)</span> <span style=color:#66d9ef>=&gt;</span> assert<span style=color:#f92672>(</span>dsEqual<span style=color:#f92672>(</span>a<span style=color:#f92672>,</span>b<span style=color:#f92672>))</span>
+    <span style=color:#f92672>}</span>
+ 
+  <span style=color:#f92672>}</span>
+ 
+ 
+  <span style=color:#66d9ef>def</span> dsEqual<span style=color:#f92672>(</span>a<span style=color:#66d9ef>:</span><span style=color:#66d9ef>MyCaseClassRecord</span><span style=color:#f92672>,</span> b<span style=color:#66d9ef>:</span><span style=color:#66d9ef>MyCaseClassRecord</span><span style=color:#f92672>)</span><span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Boolean</span> <span style=color:#f92672>={</span>
+    a<span style=color:#f92672>.</span>user_id <span style=color:#f92672>==</span> b<span style=color:#f92672>.</span>user_id <span style=color:#f92672>&amp;&amp;</span>
+      sameArray<span style=color:#f92672>(</span>a<span style=color:#f92672>.</span>my_array<span style=color:#f92672>,</span> b<span style=color:#f92672>.</span>my_array<span style=color:#f92672>)</span> <span style=color:#f92672>&amp;&amp;</span>
+      sameMap<span style=color:#f92672>(</span>a<span style=color:#f92672>.</span>my_map<span style=color:#f92672>,</span>b<span style=color:#f92672>.</span>my_map<span style=color:#f92672>)</span>
+  <span style=color:#f92672>}</span>
+ 
+<span style=color:#75715e>// compare Arrays with nesting
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>def</span> sameArray<span style=color:#f92672>(</span>a<span style=color:#66d9ef>:</span><span style=color:#66d9ef>Array</span><span style=color:#f92672>[</span><span style=color:#66d9ef>String</span><span style=color:#f92672>],</span> b<span style=color:#66d9ef>:</span><span style=color:#66d9ef>Array</span><span style=color:#f92672>[</span><span style=color:#66d9ef>String</span><span style=color:#f92672>])</span> <span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Boolean</span> <span style=color:#f92672>={</span>
+    a <span style=color:#f92672>==</span> b <span style=color:#f92672>||</span> a<span style=color:#f92672>.</span>sameElements<span style=color:#f92672>(</span>b<span style=color:#f92672>)</span>
+  <span style=color:#f92672>}</span>
+ 
+<span style=color:#75715e>// compare Maps with nesting
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>def</span> sameMap<span style=color:#f92672>(</span>a<span style=color:#66d9ef>:</span><span style=color:#66d9ef>Map</span><span style=color:#f92672>[</span><span style=color:#66d9ef>String</span>,<span style=color:#66d9ef>Int</span><span style=color:#f92672>],</span> b<span style=color:#66d9ef>:</span><span style=color:#66d9ef>Map</span><span style=color:#f92672>[</span><span style=color:#66d9ef>String</span>,<span style=color:#66d9ef>Int</span><span style=color:#f92672>])</span> <span style=color:#66d9ef>:</span> <span style=color:#66d9ef>Boolean</span> <span style=color:#f92672>={</span>
+    a <span style=color:#f92672>==</span> b <span style=color:#f92672>||</span> a<span style=color:#f92672>.</span>sameElements<span style=color:#f92672>(</span>b<span style=color:#f92672>)</span>
+  <span style=color:#f92672>}</span>
+
+</code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/2e0918c281c3c8e072ef1c3987259cba6b2a7ce5 title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
+<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/b556fe3021db76c9bd6588be8571d171a703486a title="Last modified by Vicki Boykis | Feb 7, 2022" target=_blank rel=noopener>
 <img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>Feb 7, 2022</span>
 </a>
@@ -211,13 +373,10 @@
 </div>
 <script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
 </footer>
+<div class=book-comments>
+</div>
 <label for=menu-control class="hidden book-menu-overlay"></label>
 </div>
-<aside class=book-toc>
-<div class=book-toc-content>
-<nav id=TableOfContents></nav>
-</div>
-</aside>
 </main>
 </body>
 </html>
