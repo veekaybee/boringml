@@ -2,4 +2,4 @@
 build.scala is the more advanced version of the build.sbt file, and often is used for more complicated projects.
 Here&amp;rsquo;s an example of the difference between .sbt and .scala build files:
 build.sbt
-name := &amp;quot;hello&amp;quot; version := &amp;quot;1.</description></item></channel></rss>
+name := &amp;#34;hello&amp;#34; version := &amp;#34;1.</description></item></channel></rss>
