@@ -1,168 +1,27 @@
-<!doctype html><html lang=en dir=ltr>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Chapter 3 of Mining Massive DataSets #  Chapter Slides
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Chapter 3 of Mining Massive DataSets # Chapter Slides
 Motivating the Chapter
 We cover the first part of this chapter, which deals with Jaccard similarity, shingling, and minhash.
-Often these days data analysis involves datasets that have high dimensionality, meaning the data set in question has more features than values and to make statistically sound inferences at scale, require large amounts of data (more info here, on p. 22), and it’s these kinds of datasets that Chapter 3 deals with.">
-<meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Implementing Minhash">
-<meta property="og:description" content="Chapter 3 of Mining Massive DataSets #  Chapter Slides
+Often these days data analysis involves datasets that have high dimensionality, meaning the data set in question has more features than values and to make statistically sound inferences at scale, require large amounts of data (more info here, on p. 22), and it’s these kinds of datasets that Chapter 3 deals with."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Implementing Minhash"><meta property="og:description" content="Chapter 3 of Mining Massive DataSets # Chapter Slides
 Motivating the Chapter
 We cover the first part of this chapter, which deals with Jaccard similarity, shingling, and minhash.
-Often these days data analysis involves datasets that have high dimensionality, meaning the data set in question has more features than values and to make statistically sound inferences at scale, require large amounts of data (more info here, on p. 22), and it’s these kinds of datasets that Chapter 3 deals with.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://boringml.com/docs/recsys/minhash/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2021-12-30T10:35:40-05:00">
-<title>Implementing Minhash | Boring Machine Learning</title><link rel=manifest href=/manifest.json>
-<link rel=icon href=/favicon.png type=image/x-icon>
-<link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
-<script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.38094d69b427f1cf9a059e2f8cbed5f22cab83e90a18a3f2bbaa96daa66d78ab.js integrity="sha256-OAlNabQn8c+aBZ4vjL7V8iyrg+kKGKPyu6qW2qZteKs=" crossorigin=anonymous></script>
-</head><body dir=ltr>
-<input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control>
-<main class="container flex">
-<aside class=book-menu>
-<div class=book-menu-content>
-<nav>
-<h2 class=book-brand>
-<a class="flex align-center" href=/><img src=/logo.png alt=Logo><span>Boring Machine Learning</span>
-</a>
-</h2><div class=book-search>
-<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
-<div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul>
-<li class=book-section-flat>
-<a href=http://boringml.com/docs/languages/>Languages</a>
-<ul>
-<li>
-<input type=checkbox id=section-8164995f4ca3a5480a8dc157c5688ca8 class=toggle>
-<label for=section-8164995f4ca3a5480a8dc157c5688ca8 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/python/>Python</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/python/strptime/>strptime and strftime</a>
-</li><li>
-<a href=http://boringml.com/docs/languages/python/venv/>venv</a>
-</li></ul></li><li>
-<input type=checkbox id=section-16696fcaf676797c81cf5e45e5de0279 class=toggle>
-<label for=section-16696fcaf676797c81cf5e45e5de0279 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/scala/>Scala</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/scala/build-sbt/>build.sbt and build.Scala</a>
-</li></ul></li><li>
-<input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle>
-<label for=section-724b24b6e475c23be17bd4b512fe832d class="flex justify-between">
-<a href=http://boringml.com/docs/languages/sql/>SQL</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/sql/legible-sql/>Legible SQL</a>
-</li></ul></li><li>
-<input type=checkbox id=section-32778f62eb3265d41d230b051a98557a class=toggle>
-<label for=section-32778f62eb3265d41d230b051a98557a class="flex justify-between">
-<a href=http://boringml.com/docs/languages/java/>Java</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/java/arrays/>is_set</a>
-</li></ul></li><li>
-<input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle>
-<label for=section-5244711b3ae5943d25076a75246efe07 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/php/>PHP</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/php/arrays/>is_set</a>
-</li></ul></li></ul></li><li>
-<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle checked>
-<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between">
-<a href=http://boringml.com/docs/recsys/>Recsys</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/recsys/minhash/ class=active>Implementing Minhash</a>
-</li><li>
-<a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a>
-</li><li>
-<a href=http://boringml.com/docs/recsys/precision-and-recall/>Precision and Recall</a>
-</li></ul></li><li>
-<input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle>
-<label for=section-993c2a7ec1f9c0d65a914f6698e5bb93 class="flex justify-between">
-<a href=http://boringml.com/docs/platforms/>Platforms</a>
-</label>
-<ul>
-<li>
-<input type=checkbox id=section-d34f17f99c2c17870b793497139db159 class=toggle>
-<label for=section-d34f17f99c2c17870b793497139db159 class="flex justify-between">
-<a href=http://boringml.com/docs/platforms/cloud/>Cloud</a>
-</label>
-<ul>
-<li>
-<input type=checkbox id=section-9bf714ba1159b4c6def009bc6eac7dc0 class=toggle>
-<label for=section-9bf714ba1159b4c6def009bc6eac7dc0 class="flex justify-between">
-<a href=http://boringml.com/docs/platforms/cloud/aws/>Aws</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>Lambdas</a>
-</li></ul></li></ul></li><li>
-<a href=http://boringml.com/docs/platforms/kubernetes/>Kubernetes</a>
-</li><li>
-<input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle>
-<label for=section-1b21d1cd61c37cc32012a0886c8a3a1e class="flex justify-between">
-<a role=button>Spark</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/platforms/spark/create-data-python/>Sample data in PySpark</a>
-</li><li>
-<a href=http://boringml.com/docs/platforms/spark/testing-dataframes/>Writing Unit Tests for Spark Apps in Scala</a>
-</li></ul></li><li>
-<a href=http://boringml.com/docs/platforms/airflow/>Airflow</a>
-</li></ul></li><li>
-<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
-<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
-<a role=button>Computer Science</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
-</li></ul></li><li>
-<a href=http://boringml.com/docs/what-is-ml/>What is machine learning engineering?</a>
-</li><li>
-<a href=http://boringml.com/docs/about/>About Me</a>
-</li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
-</div></aside><div class=book-page>
-<header class=book-header>
-<div class="flex align-center justify-between">
-<label for=menu-control>
-<img src=/svg/menu.svg class=book-icon alt=Menu>
-</label>
+Often these days data analysis involves datasets that have high dimensionality, meaning the data set in question has more features than values and to make statistically sound inferences at scale, require large amounts of data (more info here, on p. 22), and it’s these kinds of datasets that Chapter 3 deals with."><meta property="og:type" content="article"><meta property="og:url" content="http://boringml.com/docs/recsys/minhash/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2021-12-30T10:35:40-05:00"><title>Implementing Minhash | Boring Machine Learning</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous><script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.eae0f3bcc9c58bcf40c41b89e0a2cee814c166311df27a39347af524c0693ae4.js integrity="sha256-6uDzvMnFi89AxBuJ4KLO6BTBZjEd8no5NHr1JMBpOuQ=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/logo.png alt=Logo><span>Boring Machine Learning</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li class=book-section-flat><a href=http://boringml.com/docs/languages/>Languages</a><ul><li><input type=checkbox id=section-8164995f4ca3a5480a8dc157c5688ca8 class=toggle>
+<label for=section-8164995f4ca3a5480a8dc157c5688ca8 class="flex justify-between"><a href=http://boringml.com/docs/languages/python/>Python</a></label><ul><li><a href=http://boringml.com/docs/languages/python/strptime/>strptime and strftime</a></li><li><a href=http://boringml.com/docs/languages/python/venv/>venv</a></li></ul></li><li><input type=checkbox id=section-16696fcaf676797c81cf5e45e5de0279 class=toggle>
+<label for=section-16696fcaf676797c81cf5e45e5de0279 class="flex justify-between"><a href=http://boringml.com/docs/languages/scala/>Scala</a></label><ul><li><a href=http://boringml.com/docs/languages/scala/build-sbt/>build.sbt and build.Scala</a></li></ul></li><li><input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle>
+<label for=section-724b24b6e475c23be17bd4b512fe832d class="flex justify-between"><a href=http://boringml.com/docs/languages/sql/>SQL</a></label><ul><li><a href=http://boringml.com/docs/languages/sql/legible-sql/>Legible SQL</a></li></ul></li><li><input type=checkbox id=section-32778f62eb3265d41d230b051a98557a class=toggle>
+<label for=section-32778f62eb3265d41d230b051a98557a class="flex justify-between"><a href=http://boringml.com/docs/languages/java/>Java</a></label><ul><li><a href=http://boringml.com/docs/languages/java/arrays/>is_set</a></li></ul></li><li><input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle>
+<label for=section-5244711b3ae5943d25076a75246efe07 class="flex justify-between"><a href=http://boringml.com/docs/languages/php/>PHP</a></label><ul><li><a href=http://boringml.com/docs/languages/php/arrays/>is_set</a></li></ul></li></ul></li><li><input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle checked>
+<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between"><a href=http://boringml.com/docs/recsys/>Recsys</a></label><ul><li><a href=http://boringml.com/docs/recsys/minhash/ class=active>Implementing Minhash</a></li><li><a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a></li><li><a href=http://boringml.com/docs/recsys/precision-and-recall/>Precision and Recall</a></li></ul></li><li><input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle>
+<label for=section-993c2a7ec1f9c0d65a914f6698e5bb93 class="flex justify-between"><a href=http://boringml.com/docs/platforms/>Platforms</a></label><ul><li><input type=checkbox id=section-d34f17f99c2c17870b793497139db159 class=toggle>
+<label for=section-d34f17f99c2c17870b793497139db159 class="flex justify-between"><a href=http://boringml.com/docs/platforms/cloud/>Cloud</a></label><ul><li><input type=checkbox id=section-9bf714ba1159b4c6def009bc6eac7dc0 class=toggle>
+<label for=section-9bf714ba1159b4c6def009bc6eac7dc0 class="flex justify-between"><a href=http://boringml.com/docs/platforms/cloud/aws/>Aws</a></label><ul><li><a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>Lambdas</a></li></ul></li></ul></li><li><a href=http://boringml.com/docs/platforms/kubernetes/>Kubernetes</a></li><li><input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle>
+<label for=section-1b21d1cd61c37cc32012a0886c8a3a1e class="flex justify-between"><a role=button>Spark</a></label><ul><li><a href=http://boringml.com/docs/platforms/spark/create-data-python/>Sample data in PySpark</a></li><li><a href=http://boringml.com/docs/platforms/spark/testing-dataframes/>Writing Unit Tests for Spark Apps in Scala</a></li></ul></li><li><a href=http://boringml.com/docs/platforms/airflow/>Airflow</a></li></ul></li><li><input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
+<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between"><a role=button>Computer Science</a></label><ul><li><a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a></li></ul></li><li><a href=http://boringml.com/docs/what-is-ml/>What is machine learning engineering?</a></li><li><a href=http://boringml.com/docs/about/>About Me</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>Implementing Minhash</strong>
-<label for=toc-control>
-<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
-</label>
-</div><aside class="hidden clearfix">
-<nav id=TableOfContents></nav></aside></header><article class=markdown><h1 id=chapter-3-of-mining-massive-datasets>
-Chapter 3 of Mining Massive DataSets
-<a class=anchor href=#chapter-3-of-mining-massive-datasets>#</a>
-</h1><p><a href=http://infolab.stanford.edu/~ullman/mmds/ch3n.pdf>Chapter</a> <a href=http://www.mmds.org/mmds/v2.1/ch03-lsh.pdf>Slides</a></p><p><strong>Motivating the Chapter</strong></p><p>We cover the first part of this chapter, which deals with Jaccard similarity, shingling, and minhash.</p><p>Often these days data analysis involves datasets that have high dimensionality, meaning the data set in question has more features than values and to make statistically sound inferences at scale, require large amounts of data (<a href=https://web.stanford.edu/~hastie/Papers/ESLII.pdf>more info here, on p. 22</a>), and it’s these kinds of datasets that Chapter 3 deals with.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash1.png alt=minhash></p><p>What kinds of datasets have these features? In the world of recommendation systems, most any kind of content we’d like to think about recommending, such as text and images, <a href=https://towardsdatascience.com/understanding-high-dimensional-spaces-in-machine-learning-4c5c38930b6a>will be high-dimensional spaces.</a> One important ability in dealing with these types of large datasets is to be able to find similar items, in fact it’s this that underlies the principles of offering recommendations, i.e. how similar is this post to this post, how can we recommend things that are similar to other things we know for sure the user likes?</p><p>Before we recommend something, we have to see whether two items are similar. I personally can eyeball whether two paintings are similar to each other, but when you have to compare millions of pairs of items (for example, <a href=https://www.tumblr.com/about>10 million posts per day across 500 million blogs</a>), humans don’t scale.</p><p><strong>Jaccard Similarity</strong></p><p>This chapter of MMDS specifically deals with minhash, one method of combing through millions of items and evaluating how similar they are based on some definition of “distance” between two sets, or groups of items. It was a technique initially used to dedup search results for AltaVista. It can also be used for recommending similar images or detecting plagiarism. It’s mostly used in the context of comparing groups of (text-based) documents. <a href=https://mccormickml.com/2015/06/12/minhash-tutorial-with-python-code/>Something that’s important to keep in mind</a> is that we’re not actually looking for the meaning of the sets, just whether these documents are similar on a purely textual level.</p><p>The chapter starts out by introducing Jaccard similarity, a metric that we can use to determine whether any given two sets of items are similar, for the mathematical definition of set.</p><p>Jaccard similarity is the similarity of sets by looking at the relative size of their intersection divided by their union, or SIM(S,T) = |S ∩ T| / |S U T|. So imagine this is two collections of documents: it could be two web pages and the sentences in their pages, or two directories full of pictures, etc.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash2.png alt=minhash2></p><p>Here’s the implementation of Jaccard similarity in <a href=https://gist.github.com/veekaybee/f31274222ce85f7005b29f78df3de34d>Python and Scala</a>.</p><p>{{ }}</p><p>This is only good for one set of items, though, and doesn’t scale well if the sets are quite large. So we use minhashing, which gets close enough to approximating Jaccard similarity that we can say with confidence that two sets are alike or not alike.</p><p>As the <a href=http://cs.brown.edu/courses/cs253/papers/nearduplicate.pdf>minhash paper says</a>,</p><pre><code>However, for efficient large scale web indexing it is not necessary to determine the actual resemblance value: it suffices to determine whether newly encountered documents are duplicates or near-duplicates of documents already indexed. In other words, it suffices to determine whether the resemblance is above a certain threshold. 
-</code></pre><p>If this sounds familiar to you, it may be because you’re already familiar with datasketches, the family of probabilistic data structures that create quick glances at a large amount of data and tell you with some degree of certainty that items are the same or not the same, or can introspect a set for certain properties. (Bloom filters and HyperLogLog are examples.)</p><p><strong>Shingling</strong></p><p>So, in order to compare documents, we need to create sets of them that we can fingerprint and compare the fingerprints to each other. In order to create sets of documents, we create a matrix, where the rows are all of the individual elements in the set that we care about and the columns are any given set.</p><p>Here’s a good representation of how this works, <a href=https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf>from this course</a>. Imagine each set is a single piece of paper with several numbers on it:</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash3.png alt=minhash3></p><p>For word-based documents, though, we need to get at the letter representations of a set. So, instead of using individual numbers, we use shingles, which are really just short strings of any number of letters.</p><p>A document is a string of characters. Define a k-shingle for a document to be</p><p>any substring of length k found within the document. So, Suppose our document D is the string <code>abcdabd</code>, and we pick k = 2. Then the set of 2-shingles for D is {<code>ab</code>, <code>bc</code>, <code>cd</code>, <code>da</code>, <code>bd</code>}. If you’ve ever worked with Pig (sorry), you can think of these as bags, or, in most other languages, tuples. So you get a set of tuples.</p><p>K can be almost any number we want, but at some point, there will be an optimal number where we don’t get a sparse matrix that’s too large to compute or a matrix that’s too small where the similarity between sets is too high. In this way, picking K is similar to picking K for clustering algorithms where you use the highly scientific method of the <a href=https://en.wikipedia.org/wiki/Elbow_method_%28clustering%29>elbow method until it looks right. </a></p><p><strong>Minhash</strong></p><p>Once we have K, we can set up the matrix. And now we minhash. Here, for example, k is 1.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash4.png alt=minhash3></p><p>First, we pick a permutation of rows. What this means in English is that we just randomize the letters until they’re in a different order.</p><p>Then, we create the new matrix, indicating whether each letter is in each set in the same position. For example, if we mix up the letters like this, the rows are b,e,a,d,and c instead of alphabetical order.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash5.png alt=minhash5></p><p>And we can see, from the first diagram, that for S1, b is 0, so the value of that index is 0, and so on.</p><p>Now for the actual minhash function, we keep going down the row until we hit the first 1 value. For S1, that value is a:</p><p>column, which is the column for set <code>S1</code>, has 0 in row b, so we proceed to row e the second in the permuted order. There is again a 0 in the column for S1, so we proceed to row a, where we find a 1. Thus. <code>h(S1) = a</code>. And likewise, we see that <code>h(S2) = c</code>, <code>h(S3) = b</code>, and <code>h(S4) = a</code>.</p><p>Now we get to the connection between minhash and Jaccard similarity:</p><pre><code>The probability that the minhash function for a random permutation of rows produces the same value for two sets equals the Jaccard similarity of those sets
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents></nav></aside></header><article class=markdown><h1 id=chapter-3-of-mining-massive-datasets>Chapter 3 of Mining Massive DataSets
+<a class=anchor href=#chapter-3-of-mining-massive-datasets>#</a></h1><p><a href=http://infolab.stanford.edu/~ullman/mmds/ch3n.pdf>Chapter</a> <a href=http://www.mmds.org/mmds/v2.1/ch03-lsh.pdf>Slides</a></p><p><strong>Motivating the Chapter</strong></p><p>We cover the first part of this chapter, which deals with Jaccard similarity, shingling, and minhash.</p><p>Often these days data analysis involves datasets that have high dimensionality, meaning the data set in question has more features than values and to make statistically sound inferences at scale, require large amounts of data (<a href=https://web.stanford.edu/~hastie/Papers/ESLII.pdf>more info here, on p. 22</a>), and it’s these kinds of datasets that Chapter 3 deals with.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash1.png alt=minhash></p><p>What kinds of datasets have these features? In the world of recommendation systems, most any kind of content we’d like to think about recommending, such as text and images, <a href=https://towardsdatascience.com/understanding-high-dimensional-spaces-in-machine-learning-4c5c38930b6a>will be high-dimensional spaces.</a> One important ability in dealing with these types of large datasets is to be able to find similar items, in fact it’s this that underlies the principles of offering recommendations, i.e. how similar is this post to this post, how can we recommend things that are similar to other things we know for sure the user likes?</p><p>Before we recommend something, we have to see whether two items are similar. I personally can eyeball whether two paintings are similar to each other, but when you have to compare millions of pairs of items (for example, <a href=https://www.tumblr.com/about>10 million posts per day across 500 million blogs</a>), humans don’t scale.</p><p><strong>Jaccard Similarity</strong></p><p>This chapter of MMDS specifically deals with minhash, one method of combing through millions of items and evaluating how similar they are based on some definition of “distance” between two sets, or groups of items. It was a technique initially used to dedup search results for AltaVista. It can also be used for recommending similar images or detecting plagiarism. It’s mostly used in the context of comparing groups of (text-based) documents. <a href=https://mccormickml.com/2015/06/12/minhash-tutorial-with-python-code/>Something that’s important to keep in mind</a> is that we’re not actually looking for the meaning of the sets, just whether these documents are similar on a purely textual level.</p><p>The chapter starts out by introducing Jaccard similarity, a metric that we can use to determine whether any given two sets of items are similar, for the mathematical definition of set.</p><p>Jaccard similarity is the similarity of sets by looking at the relative size of their intersection divided by their union, or SIM(S,T) = |S ∩ T| / |S U T|. So imagine this is two collections of documents: it could be two web pages and the sentences in their pages, or two directories full of pictures, etc.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash2.png alt=minhash2></p><p>Here’s the implementation of Jaccard similarity in <a href=https://gist.github.com/veekaybee/f31274222ce85f7005b29f78df3de34d>Python and Scala</a>.</p><p>{{ }}</p><p>This is only good for one set of items, though, and doesn’t scale well if the sets are quite large. So we use minhashing, which gets close enough to approximating Jaccard similarity that we can say with confidence that two sets are alike or not alike.</p><p>As the <a href=http://cs.brown.edu/courses/cs253/papers/nearduplicate.pdf>minhash paper says</a>,</p><pre><code>However, for efficient large scale web indexing it is not necessary to determine the actual resemblance value: it suffices to determine whether newly encountered documents are duplicates or near-duplicates of documents already indexed. In other words, it suffices to determine whether the resemblance is above a certain threshold. 
+</code></pre><p>If this sounds familiar to you, it may be because you’re already familiar with datasketches, the family of probabilistic data structures that create quick glances at a large amount of data and tell you with some degree of certainty that items are the same or not the same, or can introspect a set for certain properties. (Bloom filters and HyperLogLog are examples.)</p><p><strong>Shingling</strong></p><p>So, in order to compare documents, we need to create sets of them that we can fingerprint and compare the fingerprints to each other. In order to create sets of documents, we create a matrix, where the rows are all of the individual elements in the set that we care about and the columns are any given set.</p><p>Here’s a good representation of how this works, <a href=https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf>from this course</a>. Imagine each set is a single piece of paper with several numbers on it:</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash3.png alt=minhash3></p><p>For word-based documents, though, we need to get at the letter representations of a set. So, instead of using individual numbers, we use shingles, which are really just short strings of any number of letters.</p><p>A document is a string of characters. Define a k-shingle for a document to be</p><p>any substring of length k found within the document. So, Suppose our document D is the string <code>abcdabd</code>, and we pick k = 2. Then the set of 2-shingles for D is {<code>ab</code>, <code>bc</code>, <code>cd</code>, <code>da</code>, <code>bd</code>}. If you’ve ever worked with Pig (sorry), you can think of these as bags, or, in most other languages, tuples. So you get a set of tuples.</p><p>K can be almost any number we want, but at some point, there will be an optimal number where we don’t get a sparse matrix that’s too large to compute or a matrix that’s too small where the similarity between sets is too high. In this way, picking K is similar to picking K for clustering algorithms where you use the highly scientific method of the <a href=https://en.wikipedia.org/wiki/Elbow_method_%28clustering%29>elbow method until it looks right.</a></p><p><strong>Minhash</strong></p><p>Once we have K, we can set up the matrix. And now we minhash. Here, for example, k is 1.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash4.png alt=minhash3></p><p>First, we pick a permutation of rows. What this means in English is that we just randomize the letters until they’re in a different order.</p><p>Then, we create the new matrix, indicating whether each letter is in each set in the same position. For example, if we mix up the letters like this, the rows are b,e,a,d,and c instead of alphabetical order.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash5.png alt=minhash5></p><p>And we can see, from the first diagram, that for S1, b is 0, so the value of that index is 0, and so on.</p><p>Now for the actual minhash function, we keep going down the row until we hit the first 1 value. For S1, that value is a:</p><p>column, which is the column for set <code>S1</code>, has 0 in row b, so we proceed to row e the second in the permuted order. There is again a 0 in the column for S1, so we proceed to row a, where we find a 1. Thus. <code>h(S1) = a</code>. And likewise, we see that <code>h(S2) = c</code>, <code>h(S3) = b</code>, and <code>h(S4) = a</code>.</p><p>Now we get to the connection between minhash and Jaccard similarity:</p><pre><code>The probability that the minhash function for a random permutation of rows produces the same value for two sets equals the Jaccard similarity of those sets
 </code></pre><p>This is really important, because it allows us to use Jaccard similarity as a substitute for manually calculating computations between all the rows/columns of a very large document matrix. And,</p><pre><code>Moreover, the more minhashings we use, i.e., the more rows in the signature matrix, the smaller the expected error in the estimate of the Jaccard similarity will be
-</code></pre><p>Here’s a good explanation of how this <a href=https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf>works with a little more detail than MMDS.</a></p><p><strong>Minhashing Signatures</strong></p><p>The problem here is that it will take forever to permutate and calculate the Jaccard similarity between all items and sets. So what we do is create a signature, a fingerprint of each set by using</p><p>a random hash function that maps row numbers to as many buckets as there</p><p>are rows. Thus, instead of picking n random permutations of rows, we pick n randomly chosen hash functions h1, h2, . . . , hn on the rows. We construct the signature matrix by considering each row in their given order, and then we look across the rows.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash6.png alt=minhash5></p><p>You can have as many hash functions as you want, but each one will generate a specific number. Get the minimum number of a single hash function, apply across as many as you have, and you’ll get a unique ID for your permutation and then you can compare them across document sets.</p><p>MMDS has a good example of this, but I think this is clearer, and <a href=https://github.com/chrisjmccormick/MinHash/blob/master/runMinHashExample.py>this Python implementation</a> is really, really good at explaining what happens in code.</p></article><footer class=book-footer>
-<div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/fe2bfaa625ecff58f806a4cc43e3dbd76a9988c6 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
-<img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Dec 30, 2021</span>
-</a>
-</div></div><script>(function(){function e(n){const e=window.getSelection(),t=document.createRange();t.selectNodeContents(n),e.removeAllRanges(),e.addRange(t)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
-</footer><div class=book-comments>
-</div><label for=menu-control class="hidden book-menu-overlay"></label>
-</div><aside class=book-toc>
-<div class=book-toc-content>
-<nav id=TableOfContents></nav></div></aside></main></body></html>
+</code></pre><p>Here’s a good explanation of how this <a href=https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf>works with a little more detail than MMDS.</a></p><p><strong>Minhashing Signatures</strong></p><p>The problem here is that it will take forever to permutate and calculate the Jaccard similarity between all items and sets. So what we do is create a signature, a fingerprint of each set by using</p><p>a random hash function that maps row numbers to as many buckets as there</p><p>are rows. Thus, instead of picking n random permutations of rows, we pick n randomly chosen hash functions h1, h2, . . . , hn on the rows. We construct the signature matrix by considering each row in their given order, and then we look across the rows.</p><p><img src=https://raw.githubusercontent.com/veekaybee/boringml/main/static/images/minhash6.png alt=minhash5></p><p>You can have as many hash functions as you want, but each one will generate a specific number. Get the minimum number of a single hash function, apply across as many as you have, and you’ll get a unique ID for your permutation and then you can compare them across document sets.</p><p>MMDS has a good example of this, but I think this is clearer, and <a href=https://github.com/chrisjmccormick/MinHash/blob/master/runMinHashExample.py>this Python implementation</a> is really, really good at explaining what happens in code.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/fe2bfaa625ecff58f806a4cc43e3dbd76a9988c6 title='Last modified by Vicki | Dec 30, 2021' target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Dec 30, 2021</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents></nav></div></aside></main></body></html>

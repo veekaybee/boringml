@@ -1,148 +1,21 @@
-<!doctype html><html lang=en dir=ltr>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on sc.parallelize.
-from pyspark.sql.session import SparkSession rdd = sc.parallelize([(0,None), (0,1), (0,2), (1,2), (1,10), (1,20), (3,18), (3,18), (3,18)]) df=rdd.toDF(['id','score']) df.show() +---+-----+ | id|score| +---+-----+ | 0| null| | 0| 1| | 0| 2| | 1| 2| | 1| 10| | 1| 20| | 3| 18| | 3| 18| | 3| 18| +---+-----+ df.printSchema() root |-- id: long (nullable = true) |-- score: long (nullable = true) None is a special keyword in Python that will let you create nullable fields.">
-<meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Sample data in PySpark">
-<meta property="og:description" content="Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on sc.parallelize.
-from pyspark.sql.session import SparkSession rdd = sc.parallelize([(0,None), (0,1), (0,2), (1,2), (1,10), (1,20), (3,18), (3,18), (3,18)]) df=rdd.toDF(['id','score']) df.show() +---+-----+ | id|score| +---+-----+ | 0| null| | 0| 1| | 0| 2| | 1| 2| | 1| 10| | 1| 20| | 3| 18| | 3| 18| | 3| 18| +---+-----+ df.printSchema() root |-- id: long (nullable = true) |-- score: long (nullable = true) None is a special keyword in Python that will let you create nullable fields.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://boringml.com/docs/platforms/spark/create-data-python/"><meta property="article:section" content="docs">
-<meta property="article:modified_time" content="2021-12-30T09:44:09-05:00">
-<title>Sample data in PySpark | Boring Machine Learning</title><link rel=manifest href=/manifest.json>
-<link rel=icon href=/favicon.png type=image/x-icon>
-<link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous>
-<script defer src=/flexsearch.min.js></script>
-<script defer src=/en.search.min.38094d69b427f1cf9a059e2f8cbed5f22cab83e90a18a3f2bbaa96daa66d78ab.js integrity="sha256-OAlNabQn8c+aBZ4vjL7V8iyrg+kKGKPyu6qW2qZteKs=" crossorigin=anonymous></script>
-</head><body dir=ltr>
-<input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control>
-<main class="container flex">
-<aside class=book-menu>
-<div class=book-menu-content>
-<nav>
-<h2 class=book-brand>
-<a class="flex align-center" href=/><img src=/logo.png alt=Logo><span>Boring Machine Learning</span>
-</a>
-</h2><div class=book-search>
-<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
-<div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul>
-<li class=book-section-flat>
-<a href=http://boringml.com/docs/languages/>Languages</a>
-<ul>
-<li>
-<input type=checkbox id=section-8164995f4ca3a5480a8dc157c5688ca8 class=toggle>
-<label for=section-8164995f4ca3a5480a8dc157c5688ca8 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/python/>Python</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/python/strptime/>strptime and strftime</a>
-</li><li>
-<a href=http://boringml.com/docs/languages/python/venv/>venv</a>
-</li></ul></li><li>
-<input type=checkbox id=section-16696fcaf676797c81cf5e45e5de0279 class=toggle>
-<label for=section-16696fcaf676797c81cf5e45e5de0279 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/scala/>Scala</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/scala/build-sbt/>build.sbt and build.Scala</a>
-</li></ul></li><li>
-<input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle>
-<label for=section-724b24b6e475c23be17bd4b512fe832d class="flex justify-between">
-<a href=http://boringml.com/docs/languages/sql/>SQL</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/sql/legible-sql/>Legible SQL</a>
-</li></ul></li><li>
-<input type=checkbox id=section-32778f62eb3265d41d230b051a98557a class=toggle>
-<label for=section-32778f62eb3265d41d230b051a98557a class="flex justify-between">
-<a href=http://boringml.com/docs/languages/java/>Java</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/java/arrays/>is_set</a>
-</li></ul></li><li>
-<input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle>
-<label for=section-5244711b3ae5943d25076a75246efe07 class="flex justify-between">
-<a href=http://boringml.com/docs/languages/php/>PHP</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/languages/php/arrays/>is_set</a>
-</li></ul></li></ul></li><li>
-<input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle>
-<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between">
-<a href=http://boringml.com/docs/recsys/>Recsys</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/recsys/minhash/>Implementing Minhash</a>
-</li><li>
-<a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a>
-</li><li>
-<a href=http://boringml.com/docs/recsys/precision-and-recall/>Precision and Recall</a>
-</li></ul></li><li>
-<input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle checked>
-<label for=section-993c2a7ec1f9c0d65a914f6698e5bb93 class="flex justify-between">
-<a href=http://boringml.com/docs/platforms/>Platforms</a>
-</label>
-<ul>
-<li>
-<input type=checkbox id=section-d34f17f99c2c17870b793497139db159 class=toggle>
-<label for=section-d34f17f99c2c17870b793497139db159 class="flex justify-between">
-<a href=http://boringml.com/docs/platforms/cloud/>Cloud</a>
-</label>
-<ul>
-<li>
-<input type=checkbox id=section-9bf714ba1159b4c6def009bc6eac7dc0 class=toggle>
-<label for=section-9bf714ba1159b4c6def009bc6eac7dc0 class="flex justify-between">
-<a href=http://boringml.com/docs/platforms/cloud/aws/>Aws</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>Lambdas</a>
-</li></ul></li></ul></li><li>
-<a href=http://boringml.com/docs/platforms/kubernetes/>Kubernetes</a>
-</li><li>
-<input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle checked>
-<label for=section-1b21d1cd61c37cc32012a0886c8a3a1e class="flex justify-between">
-<a role=button>Spark</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/platforms/spark/create-data-python/ class=active>Sample data in PySpark</a>
-</li><li>
-<a href=http://boringml.com/docs/platforms/spark/testing-dataframes/>Writing Unit Tests for Spark Apps in Scala</a>
-</li></ul></li><li>
-<a href=http://boringml.com/docs/platforms/airflow/>Airflow</a>
-</li></ul></li><li>
-<input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
-<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between">
-<a role=button>Computer Science</a>
-</label>
-<ul>
-<li>
-<a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a>
-</li></ul></li><li>
-<a href=http://boringml.com/docs/what-is-ml/>What is machine learning engineering?</a>
-</li><li>
-<a href=http://boringml.com/docs/about/>About Me</a>
-</li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
-</div></aside><div class=book-page>
-<header class=book-header>
-<div class="flex align-center justify-between">
-<label for=menu-control>
-<img src=/svg/menu.svg class=book-icon alt=Menu>
-</label>
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on sc.parallelize.
+from pyspark.sql.session import SparkSession rdd = sc.parallelize([(0,None), (0,1), (0,2), (1,2), (1,10), (1,20), (3,18), (3,18), (3,18)]) df=rdd.toDF(['id','score']) df.show() +---+-----+ | id|score| +---+-----+ | 0| null| | 0| 1| | 0| 2| | 1| 2| | 1| 10| | 1| 20| | 3| 18| | 3| 18| | 3| 18| +---+-----+ df.printSchema() root |-- id: long (nullable = true) |-- score: long (nullable = true) None is a special keyword in Python that will let you create nullable fields."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Sample data in PySpark"><meta property="og:description" content="Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on sc.parallelize.
+from pyspark.sql.session import SparkSession rdd = sc.parallelize([(0,None), (0,1), (0,2), (1,2), (1,10), (1,20), (3,18), (3,18), (3,18)]) df=rdd.toDF(['id','score']) df.show() +---+-----+ | id|score| +---+-----+ | 0| null| | 0| 1| | 0| 2| | 1| 2| | 1| 10| | 1| 20| | 3| 18| | 3| 18| | 3| 18| +---+-----+ df.printSchema() root |-- id: long (nullable = true) |-- score: long (nullable = true) None is a special keyword in Python that will let you create nullable fields."><meta property="og:type" content="article"><meta property="og:url" content="http://boringml.com/docs/platforms/spark/create-data-python/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2021-12-30T09:44:09-05:00"><title>Sample data in PySpark | Boring Machine Learning</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=stylesheet href=/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css integrity="sha256-RhgbyTN1upMgJudTs3xA5v+LsWqe93DHi8xmPkV3sbo=" crossorigin=anonymous><script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.eae0f3bcc9c58bcf40c41b89e0a2cee814c166311df27a39347af524c0693ae4.js integrity="sha256-6uDzvMnFi89AxBuJ4KLO6BTBZjEd8no5NHr1JMBpOuQ=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/logo.png alt=Logo><span>Boring Machine Learning</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li class=book-section-flat><a href=http://boringml.com/docs/languages/>Languages</a><ul><li><input type=checkbox id=section-8164995f4ca3a5480a8dc157c5688ca8 class=toggle>
+<label for=section-8164995f4ca3a5480a8dc157c5688ca8 class="flex justify-between"><a href=http://boringml.com/docs/languages/python/>Python</a></label><ul><li><a href=http://boringml.com/docs/languages/python/strptime/>strptime and strftime</a></li><li><a href=http://boringml.com/docs/languages/python/venv/>venv</a></li></ul></li><li><input type=checkbox id=section-16696fcaf676797c81cf5e45e5de0279 class=toggle>
+<label for=section-16696fcaf676797c81cf5e45e5de0279 class="flex justify-between"><a href=http://boringml.com/docs/languages/scala/>Scala</a></label><ul><li><a href=http://boringml.com/docs/languages/scala/build-sbt/>build.sbt and build.Scala</a></li></ul></li><li><input type=checkbox id=section-724b24b6e475c23be17bd4b512fe832d class=toggle>
+<label for=section-724b24b6e475c23be17bd4b512fe832d class="flex justify-between"><a href=http://boringml.com/docs/languages/sql/>SQL</a></label><ul><li><a href=http://boringml.com/docs/languages/sql/legible-sql/>Legible SQL</a></li></ul></li><li><input type=checkbox id=section-32778f62eb3265d41d230b051a98557a class=toggle>
+<label for=section-32778f62eb3265d41d230b051a98557a class="flex justify-between"><a href=http://boringml.com/docs/languages/java/>Java</a></label><ul><li><a href=http://boringml.com/docs/languages/java/arrays/>is_set</a></li></ul></li><li><input type=checkbox id=section-5244711b3ae5943d25076a75246efe07 class=toggle>
+<label for=section-5244711b3ae5943d25076a75246efe07 class="flex justify-between"><a href=http://boringml.com/docs/languages/php/>PHP</a></label><ul><li><a href=http://boringml.com/docs/languages/php/arrays/>is_set</a></li></ul></li></ul></li><li><input type=checkbox id=section-3c4b9ad27a844def3e7d21cf2decb606 class=toggle>
+<label for=section-3c4b9ad27a844def3e7d21cf2decb606 class="flex justify-between"><a href=http://boringml.com/docs/recsys/>Recsys</a></label><ul><li><a href=http://boringml.com/docs/recsys/minhash/>Implementing Minhash</a></li><li><a href=http://boringml.com/docs/recsys/jaccard-similarity/>Jaccard Similarity</a></li><li><a href=http://boringml.com/docs/recsys/precision-and-recall/>Precision and Recall</a></li></ul></li><li><input type=checkbox id=section-993c2a7ec1f9c0d65a914f6698e5bb93 class=toggle checked>
+<label for=section-993c2a7ec1f9c0d65a914f6698e5bb93 class="flex justify-between"><a href=http://boringml.com/docs/platforms/>Platforms</a></label><ul><li><input type=checkbox id=section-d34f17f99c2c17870b793497139db159 class=toggle>
+<label for=section-d34f17f99c2c17870b793497139db159 class="flex justify-between"><a href=http://boringml.com/docs/platforms/cloud/>Cloud</a></label><ul><li><input type=checkbox id=section-9bf714ba1159b4c6def009bc6eac7dc0 class=toggle>
+<label for=section-9bf714ba1159b4c6def009bc6eac7dc0 class="flex justify-between"><a href=http://boringml.com/docs/platforms/cloud/aws/>Aws</a></label><ul><li><a href=http://boringml.com/docs/platforms/cloud/aws/lambdas/>Lambdas</a></li></ul></li></ul></li><li><a href=http://boringml.com/docs/platforms/kubernetes/>Kubernetes</a></li><li><input type=checkbox id=section-1b21d1cd61c37cc32012a0886c8a3a1e class=toggle checked>
+<label for=section-1b21d1cd61c37cc32012a0886c8a3a1e class="flex justify-between"><a role=button>Spark</a></label><ul><li><a href=http://boringml.com/docs/platforms/spark/create-data-python/ class=active>Sample data in PySpark</a></li><li><a href=http://boringml.com/docs/platforms/spark/testing-dataframes/>Writing Unit Tests for Spark Apps in Scala</a></li></ul></li><li><a href=http://boringml.com/docs/platforms/airflow/>Airflow</a></li></ul></li><li><input type=checkbox id=section-8524f085204099c73bb397c727f0b9fd class=toggle>
+<label for=section-8524f085204099c73bb397c727f0b9fd class="flex justify-between"><a role=button>Computer Science</a></label><ul><li><a href=http://boringml.com/docs/computer-science/hash-aggregate/>Hash aggregates</a></li></ul></li><li><a href=http://boringml.com/docs/what-is-ml/>What is machine learning engineering?</a></li><li><a href=http://boringml.com/docs/about/>About Me</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>Sample data in PySpark</strong>
-<label for=toc-control>
-</label>
-</div></header><article class=markdown><p>Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on <a href=https://spark.apache.org/docs/2.1.1/programming-guide.html#parallelized-collections>sc.parallelize</a>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> pyspark.sql.session <span style=color:#f92672>import</span> SparkSession
+<label for=toc-control></label></div></header><article class=markdown><p>Here&rsquo;s how to create a small fake dataset for testing in PySpark. More on <a href=https://spark.apache.org/docs/2.1.1/programming-guide.html#parallelized-collections>sc.parallelize</a>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> pyspark.sql.session <span style=color:#f92672>import</span> SparkSession
 </span></span><span style=display:flex><span>rdd <span style=color:#f92672>=</span> sc<span style=color:#f92672>.</span>parallelize([(<span style=color:#ae81ff>0</span>,<span style=color:#66d9ef>None</span>), (<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>1</span>), (<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>2</span>), (<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>), (<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>10</span>), (<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>20</span>), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>), (<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>18</span>)])
 </span></span><span style=display:flex><span>df<span style=color:#f92672>=</span>rdd<span style=color:#f92672>.</span>toDF([<span style=color:#e6db74>&#39;id&#39;</span>,<span style=color:#e6db74>&#39;score&#39;</span>])
 </span></span><span style=display:flex><span>df<span style=color:#f92672>.</span>show()
@@ -183,13 +56,5 @@ Note that if you don&rsquo;t specify each field as float, you get a null result 
 |  3| 18.0|
 |  3| null|
 +---+-----+
-</code></pre></article><footer class=book-footer>
-<div class="flex flex-wrap justify-between">
-<div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title="Last modified by Vicki | Dec 30, 2021" target=_blank rel=noopener>
-<img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Dec 30, 2021</span>
-</a>
-</div></div><script>(function(){function e(n){const e=window.getSelection(),t=document.createRange();t.selectNodeContents(n),e.removeAllRanges(),e.addRange(t)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
-</footer><div class=book-comments>
-</div><label for=menu-control class="hidden book-menu-overlay"></label>
-</div></main></body></html>
+</code></pre></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/veekaybee/boringml/commit/a2998020283f06a79ba794034fd18fe19def63b3 title='Last modified by Vicki | Dec 30, 2021' target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Dec 30, 2021</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div></main></body></html>
